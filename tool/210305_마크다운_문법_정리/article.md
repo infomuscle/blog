@@ -1,5 +1,12 @@
-# 마크다운 사용법 정리
+# \[Markdown\] 마크다운 사용법 정리
 
+![마크다운 로고](./image.png)
+
+내가 보고 사용하기 위한 마크다운 문법 정리.
+
+마크다운이란 무엇인가 등에 대한 서론은 생략한다.
+
+---
 
 
 ## 헤더 
@@ -26,6 +33,8 @@
 
 > [MEMO]
 > 마크다운은 표준이 없어서, H7 지원 여부는 브라우저나 에디터에 따라 다를 수 있다.
+
+---
 
 
 ## 리스트
@@ -91,6 +100,8 @@
 		- 슬기
 		- 웬디
 
+---
+
 
 ## 강조
 
@@ -132,6 +143,8 @@ This is gettihg ***heavy*** Can you hear the base boom, I'm ***ready***.
 
 Life is sweat as ___honey___ yeah this beat cha-ching like ___money___.
 
+---
+
 
 ## 코드
 
@@ -165,6 +178,8 @@ def sum(a, b):
 > [MEMO]
 > 상단 ```옆에 언어 이름을 명기하면 해당 언어에 적합하게 하이라이트 된다.
 
+---
+
 
 ## 수평선
 
@@ -196,19 +211,7 @@ def sum(a, b):
 
 - - - - - - - - - - - - - - - - - -
 
-
-## 이미지
-
-`![대체 텍스트](URL "설명(생략가능))`로 표현한다. HTML의 `<img>`태그로 변환된다. 
-
-```
-![카카오 3월 배경화면](https://t1.kakaocdn.net/friends/prod/brand/202103_type2_thumb_pc.jpg "카카오프렌즈샵")
-```
-
-![카카오 3월 배경화면](https://t1.kakaocdn.net/friends/prod/brand/202103_type2_thumb_pc.jpg "카카오프렌즈샵")
-
-> [MEMO]
-> URL은 상대적 경로료 표현할 수도 있다. ex) ./sample.png
+---
 
 
 ## 링크
@@ -236,6 +239,24 @@ https://github.com/infomuscle
 <https://leetcode.com/>
 
 https://github.com/infomuscle
+
+---
+
+
+## 이미지
+
+`![대체 텍스트](URL "설명(생략가능))`로 표현한다. HTML의 `<img>`태그로 변환된다. 
+
+```
+![카카오 3월 배경화면](https://t1.kakaocdn.net/friends/prod/brand/202103_type2_thumb_pc.jpg "카카오프렌즈샵")
+```
+
+![카카오 3월 배경화면](https://t1.kakaocdn.net/friends/prod/brand/202103_type2_thumb_pc.jpg "카카오프렌즈샵")
+
+> [MEMO]
+> URL은 상대적 경로료 표현할 수도 있다. ex) ./sample.png
+
+---
 
 
 ## 표
