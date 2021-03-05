@@ -13,7 +13,7 @@
 
 `#`으로 표현한다. 개수에 따라 수준이 정해진다. HTML의 `<h1>`~`<h6>`으로 변환된다.
 
-```
+```text
 # Header1
 ## Header2
 ### Header3
@@ -43,7 +43,9 @@
 
 #### 순서 있는 리스트
 
-```
+`숫자.`를 이용해 표현한다. 들여쓰기에 따라 수준이 정해진다.
+
+```text
 1. South Korea
 	1. Seoul
 	2. Busan
@@ -72,7 +74,7 @@
 
 `*`, `+`, `-`로 표현한다. 들여쓰기에 따라 수준이 정해진다. 
 
-```
+```text
 * 빅히트
 	* 방탄소년단
 		* 랩몬스터
@@ -109,7 +111,7 @@
 
 #### 이탤릭
 
-```
+```text
 This is gettihg *heavy* Can you hear the base boom, I'm *ready*.
 
 Life is sweat as _honey_ yeah this beat cha-ching like _money_.
@@ -121,7 +123,7 @@ Life is sweat as _honey_ yeah this beat cha-ching like _money_.
 
 #### 볼드
 
-```
+```text
 This is gettihg **heavy** Can you hear the base boom, I'm **ready**.
 
 Life is sweat as __honey__ yeah this beat cha-ching like _money__.
@@ -155,7 +157,7 @@ Life is sweat as ___honey___ yeah this beat cha-ching like ___money___.
 
 #### 인라인
 
-```
+```text
 자바의 기본 자료형으로는 'byte', `short`,`int`,`long`,`double`, `float`, `char`, `boolean`이 있습니다.
 ```
 
@@ -163,16 +165,26 @@ Life is sweat as ___honey___ yeah this beat cha-ching like ___money___.
 
 #### 블록
 
-``````
+``````text
 ```python
 def sum(a, b):
 	return a + b
+```
+
+```text
+지원되는 언어(추가 예정)
+text, java, python, js
 ```
 ``````
 
 ```python
 def sum(a, b):
 	return a + b
+```
+
+```text
+지원되는 언어(추가 예정)
+text, java, python, js
 ```
 
 > [MEMO]
@@ -185,7 +197,7 @@ def sum(a, b):
 
 `*`이나 `-`로 표현한다. 개수나 띄어쓰기 등을 적절히 활용할 수 있다.
 
-```
+```text
 ***
 
 ******************
@@ -216,13 +228,9 @@ def sum(a, b):
 
 ## 링크
 
-`[링크명](URL "설명(생략가능)"`으로 표현한다.
+`[링크명](URL "설명(생략가능)"`으로 표현한다. `<URL>`이나 URL 원문을 그대로 사용해서 간단히 표현할 수도 있다. HTML의 `<a>` 태그로 변환된다.
 
-`<URL>`이나 URL 원문을 그대로 사용해서 간단히 표현할 수도 있다.
-
-HTML의 `<a>` 태그로 변환된다.
-
-```
+```text
 [Bortfoloio](https://bortfolio.tistory.com/)
 
 [AWS](https://aws.amazon.com/ko/ "아마존 웹 서비스 바로가기")
@@ -247,7 +255,7 @@ https://github.com/infomuscle
 
 `![대체 텍스트](URL "설명(생략가능))`로 표현한다. HTML의 `<img>`태그로 변환된다. 
 
-```
+```text
 ![카카오 3월 배경화면](https://t1.kakaocdn.net/friends/prod/brand/202103_type2_thumb_pc.jpg "카카오프렌즈샵")
 ```
 
