@@ -137,7 +137,7 @@ Life is sweat as __honey__ yeah this beat cha-ching like __money__.
 
 #### 볼드이탤릭
 
-```
+```text
 This is gettihg ***heavy*** Can you hear the base boom, I'm ***ready***.
 
 Life is sweat as ___honey___ yeah this beat cha-ching like ___money___.
