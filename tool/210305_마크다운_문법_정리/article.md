@@ -1,6 +1,8 @@
 # \[Markdown\] 마크다운 사용법 정리
 
 ![마크다운 로고](./image.png)
+<!-- [##_Image|kage@lmSVX/btqZoyQUL1B/mEm79H2Ck0hAeoEiV9eXik/img.png|alignCenter|width="100%" data-origin-width="0" data-origin-height="0" data-ke-mobilestyle="widthContent"|||_##] -->
+
 
 내가 보고 사용하기 위한 마크다운 문법 정리.
 
@@ -158,10 +160,10 @@ Life is sweat as ___honey___ yeah this beat cha-ching like ___money___.
 #### 인라인
 
 ```text
-자바의 기본 자료형으로는 'byte', `short`,`int`,`long`,`double`, `float`, `char`, `boolean`이 있습니다.
+자바의 기본 자료형으로는 `byte`, `short`,`int`,`long`,`double`, `float`, `char`, `boolean`이 있습니다.
 ```
 
-자바의 기본 자료형으로는 'byte', `short`,`int`,`long`,`double`, `float`, `char`, `boolean`이 있습니다.
+자바의 기본 자료형으로는 `byte`, `short`,`int`,`long`,`double`, `float`, `char`, `boolean`이 있습니다.
 
 #### 블록
 
