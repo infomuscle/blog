@@ -1,6 +1,7 @@
 # \[Oracle\] 데이터 모델과 관계형 데이터베이스
 
 ![상용 RDBMS](./image.jpeg)
+<!-- [##_Image|kage@cX7oHU/btqZfgJ9DqG/x4H7x1pSJEWqNhLLbuouI0/img.jpg|alignCenter|width="100%" data-origin-width="0" data-origin-height="0" data-ke-mobilestyle="widthContent"|||_##] -->
 
 ## 데이터 모델
 
