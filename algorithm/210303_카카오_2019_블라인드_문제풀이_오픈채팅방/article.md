@@ -1,10 +1,11 @@
+# [Algorithm] 2019 카카오 블라인드 테스트 문제풀이 - 오픈채팅방
 
 ![2019 카카오 블라인드 테스트](./image.jpeg)
-
-# 2019 카카오 블라인드 테스트 문제풀이 - 오픈채팅방
+<!-- [##_Image|kage@c44qV8/btqY2tc51a2/4DMGMnG4e435xAkxjC1lG0/img.jpg|alignCenter|width="100%" data-origin-width="0" data-origin-height="0" data-ke-mobilestyle="widthContent"|||_##] -->
 
 ### 문제
-```
+
+```text
 카카오톡 오픈채팅방에서는 친구가 아닌 사람들과 대화를 할 수 있는데, 본래 닉네임이 아닌 가상의 닉네임을 사용하여 채팅방에 들어갈 수 있다.
 
 신입사원인 김크루는 카카오톡 오픈 채팅방을 개설한 사람을 위해, 다양한 사람들이 들어오고, 나가는 것을 지켜볼 수 있는 관리자창을 만들기로 했다. 채팅방에 누군가 들어오면 다음 메시지가 출력된다.
