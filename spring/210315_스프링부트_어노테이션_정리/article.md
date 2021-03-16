@@ -8,7 +8,6 @@
 
 
 ## context
----
 
 #### @Bean
 
@@ -43,7 +42,6 @@ public class SampleConfig {
 
 
 ## stereotype
----
 
 #### @Component
 어노테이션이 붙은 클래스를 `Bean`으로 등록한다.
@@ -91,7 +89,6 @@ public class SampleRepository {
 
 
 ## bean
----
 
 #### @Autowired
 변수에 `Bean`을 자동으로 주입한다.
@@ -106,7 +103,6 @@ public class SampleService {
 
 
 ## boot
----
 
 #### @EnableAutoConfiguration
 `classpath`에 기반해서 스프링 `ApplicationContext`를 자동으로 설정한다.
