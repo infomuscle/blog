@@ -22,7 +22,7 @@ print(replaced)
 # Shoes on, get up in the morn', cup of coffee, let's rock and roll
 ```
 
-> [MEMO]
+> [MEMO]  
 > 찾을 문자열이 여러개라면?
 > => 모든 문자열을 바꾼다.
 
@@ -41,7 +41,7 @@ print(splits)
 # ['Life', 'goes', 'on']
 ```
 
-> [MEMO]
+> [MEMO]  
 > 인자를 넣지 않으면 공백을 기준으로 나눈다.
 
 
@@ -59,8 +59,8 @@ print(s)
 # B.T.S
 ```
 
-> [MEMO]
-> 헷갈릴 수 있는데, 한글로 번역하면 약간 매끄럽지 못한데 영어 그대로 자연스럽게 읽으면 쉽다.
+> [MEMO]  
+> 헷갈릴 수 있는데, 한글로 번역하면 약간 매끄럽지 못한데 영어 그대로 자연스럽게 읽으면 쉽다.  
 > He Join Us == 그는 우리와 함께 한다(그는 우리 사이에 어울린다)
 
 #### format()
@@ -91,7 +91,7 @@ print(s))
 # Jump up to the top LeBron
 ```
 
-> [MEMO]
+> [MEMO]  
 > 함수 파라미터명으로 인자를 대입하는 것을 키워드 인자(Keyword Argument)라고 부른다.
 
 
@@ -145,7 +145,7 @@ print(idx)
 # ValueError: substring not found
 ```
 
-> [TODO]
+> [TODO]  
 > find()와 index()가 무슨 차이가 있는지 확실히 파악 필요.
 > 1) find()는 문자열에서만 사용 가능 / index()는 문자열, 리스트, 튜플에서 사용 가능. 
 > 2) 시간복잡도의 차이는 없을까?

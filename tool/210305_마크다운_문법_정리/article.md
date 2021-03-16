@@ -8,8 +8,6 @@
 
 마크다운이란 무엇인가 등에 대한 서론은 생략한다.
 
----
-
 
 ## 헤더 
 
@@ -35,8 +33,6 @@
 
 > [MEMO]
 > 마크다운은 표준이 없어서, H7 지원 여부는 브라우저나 에디터에 따라 다를 수 있다.
-
----
 
 
 ## 리스트
@@ -69,7 +65,7 @@
 	1. New York
 	3. Los Angeles
 
-> [MEMO]
+> [MEMO]  
 > 꼭 1,2,3 순서로 타이핑하지 않아도 된다. 1,3,2 등으로 순서가 꼬여도 순서대로 변환된다(United States 참조).
 
 #### 순서없는 리스트
@@ -103,8 +99,6 @@
 	- 레드벨벳
 		- 슬기
 		- 웬디
-
----
 
 
 ## 강조
@@ -147,14 +141,12 @@ This is gettihg ***heavy*** Can you hear the base boom, I'm ***ready***.
 
 Life is sweat as ___honey___ yeah this beat cha-ching like ___money___.
 
----
-
 
 ## 코드
 
 `` ` ``를 이용하여 표현한다. 1개로는 인라인, 3개로는 블록을 표현할 수 있다.
 
-> [MEMO]
+> [MEMO]  
 > 인라인 코드로 Backquote 를 표현하려면 \`\` \` \`\`처럼 사용하면 된다.
 
 #### 인라인
@@ -189,10 +181,8 @@ def sum(a, b):
 text, java, python, js
 ```
 
-> [MEMO]
+> [MEMO]  
 > 상단 ```옆에 언어 이름을 명기하면 해당 언어에 적합하게 하이라이트 된다.
-
----
 
 
 ## 수평선
@@ -224,8 +214,6 @@ text, java, python, js
 ------------------
 
 - - - - - - - - - - - - - - - - - -
-
----
 
 
 ## 링크
@@ -263,7 +251,7 @@ https://github.com/infomuscle
 
 ![카카오 3월 배경화면](https://t1.kakaocdn.net/friends/prod/brand/202103_type2_thumb_pc.jpg "카카오프렌즈샵")
 
-> [MEMO]
+> [MEMO]  
 > URL은 상대적 경로료 표현할 수도 있다. ex) ./sample.png
 
 ---

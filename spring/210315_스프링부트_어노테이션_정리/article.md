@@ -13,7 +13,7 @@
 
 어노테이션이 붙은 클래스에서 리턴하는 객체를 `Bean`으로 등록한다. 사용되는 클래스에 `@Configuration` 어노테이션을 반드시 명시해줘야 한다.
 
-> [MEMO]
+> [MEMO]  
 > Bean은 스프링 IoC 컨테이너에 의해 인스턴스화, 관리, 생성되는 객체를 의미한다.
 
 
@@ -46,9 +46,9 @@ public class SampleConfig {
 #### @Component
 어노테이션이 붙은 클래스를 `Bean`으로 등록한다.
 
-> [MEMO]
-> @Bean과 @Component의 차이점은?
-> Bean은 개발자가 직접 제어할 수 없는 외부 라이브러리를 Bean으로 만들어준다.
+> [MEMO]  
+> @Bean과 @Component의 차이점은?  
+> Bean은 개발자가 직접 제어할 수 없는 외부 라이브러리를 Bean으로 만들어준다.  
 > Component는 개발자가 직접 생성한 클래스를 Bean으로 만든다.
 
 
@@ -62,7 +62,7 @@ public class SampleController {
 }
 ```
 
-> [MEMO]
+> [MEMO]  
 > @RestController를 사용하면 API 컨트롤러가 기본값이 된다.
 
 
