@@ -1,5 +1,12 @@
 # [Python] 파이썬 문자열 함수 정리
 
+![Python Logo](./image.png)
+<!-- [##_Image|kage@4OxfM/btq0fkq18Ov/FXiejhak0PnV8bcAXsMLK1/img.png|alignCenter|width="100%"|_##] -->
+
+- 내가 보고 사용하기 위한 파이썬 문자열 함수 정리
+- 지속 업데이트 예정
+
+
 #### replace()
 
 문자열 내의 특정 문자열을 다른 문자열로 바꾼 값을 리턴한다.
@@ -92,7 +99,8 @@ print(s))
 
 문자열에서 인자의 개수를 세서 리턴한다.
 
-" "
+
+`count("찾을 문자열")`
 
 ```python
 s = "BTS"
@@ -109,7 +117,7 @@ print(c)
 문자열에서 인자가 처음으로 나온 위치를 찾아서 리턴한다.
 ***찾지 못했을 경우 -1을 리턴한다***
 
-`find()`
+`find("찾을 문자열")`
 
 ```python
 s = "Disco overload, I'm into that, I'm good to go"
@@ -125,6 +133,8 @@ print(idx)
 
 문자열에서 인자가 처음으로 나온 위치를 찾아서 리턴한다.
 ***찾지 못했을 경우 에러를 발생시킨다***
+
+`index("찾을 문자열")`
 
 ```python
 s = "Disco overload, I'm into that, I'm good to go"
