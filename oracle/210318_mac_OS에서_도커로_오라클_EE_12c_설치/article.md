@@ -94,7 +94,7 @@ $ docker run -d -it --name oracle-ee-12c-slim -p 1521:1521 -e "TZ=Asia/Seoul" in
 $ docker push infomuscle10/oracle-ee-12c-slim
 ```
 
-## 6. SQLPlus 접속
+## 4. SQLPlus 접속
 
 실행 중인 컨테이너의 SQLPlus의 system 계정에 접속한다. 
 
@@ -111,7 +111,7 @@ Connected to:
 Oracle Database 12c Enterprise Edition Release 12.2.0.1.0 - 64bit Production
 ```
 
-## 7. Datagrip 접속
+## 5. Datagrip 접속
 
 데이터그립을 실행한 후 Database 탭 -> Data Source -> Oracle을 실행한다.
 
@@ -144,7 +144,7 @@ FROM    DBA_USERS
 
 위와 같이 사용자 목록이 뜨는 것을 확인할 수 있다.
 
-## 8. Docker Compose설정
+## 6. Docker Compose 설정
 
 컨테이너 실행을 쉽게 하기 위해 Docker Compose를 구성한다. `docker-compose.yml`이란 파일을 만들고 아래와 같이 세팅한다. `volumes`는 로컬의 `./oracle` 컨테이너의 `/opt/oracle/oradata`를 연결해준다.
 
