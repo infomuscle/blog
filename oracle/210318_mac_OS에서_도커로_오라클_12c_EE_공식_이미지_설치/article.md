@@ -12,6 +12,7 @@
 ### 1) Oracle Database Enterprise Edition 도커 Hub로 이동
 
 ![Oracle Docker Hub 1](./image1.png)
+<!-- [##_Image|kage@pcUxd/btq0iWSHXaf/kTPOkCk4N9y26YTam6ZX6K/img.png|alignCenter|width="100%"|_##] -->
 
 https://hub.docker.com/_/oracle-database-enterprise-edition
 
@@ -20,12 +21,15 @@ https://hub.docker.com/_/oracle-database-enterprise-edition
 ### 2) 정보 입력 후 약관 동의
 
 ![Oracle Docker Hub 2](./image2.png)
+<!-- [##_Image|kage@bx6qJn/btq0kEqsMZX/875e8pZMI5oCh8d98kB9K1/img.png|alignCenter|width="100%"|_##] -->
+
 
 이름, 회사, 연락처 등 정보를 입력하고 약관에 동의한다.
 
 ### 3) 도커 이미지 문서 확인
 
 ![Oracle Docker Hub 3](./image3.png)
+<!-- [##_Image|kage@dTyHsE/btq0kDd3rq4/pOVKKf6xQ202WM2SkVmVw0/img.png|alignCenter|width="100%"|_##] -->
 
 오라클 DB 도커 이미지 가이드 문서를 확인한다.
 
@@ -61,13 +65,13 @@ $ docker run -d -it --name <Oracle-DB> -p 1521:1521 -e "TZ=Asia/Seoul" store/ora
 ```
 
 - 도커 실행 옵션
-    - `-d`: 컨테이너를 `detached` 모드(백그라운드)로 실행
+    - `-d`: 컨테이너를 detached(백그라운드)로 실행
     - `-it`:
     - `--name <Oracle-DB>`: 컨테이너 이름을 \<Oracle-DB\>로 지정
     - `-p 1521:1521`: 로컬포트:컨테이너포트를 연결. 1521은 오라클 포트.
     - `-e "TZ=Asia/Seoul"`: Time Zone을 Asia/Seoul로 설정 
     - `store/oracle/database-enterprise:12.2.0.1-slim`: 실행할 이미지명:태그명
-    - `-v`: volume
+    - `-v`: volume 설정. 여기선 패스하고 뒤에 docker-compose에서 세팅.
 
 컨테이너가 실행되면 `ps` 커맨드로 실행 중인 컨테이너를 확인할 수 있다.
 
@@ -95,7 +99,7 @@ $ docker push infomuscle10/oracle-ee-12c-slim
 실행 중인 컨테이너의 SQLPlus의 system 계정에 접속한다. 
 
 ```bash
-$ docker exec -it oracle-22-12c-slim bash
+$ docker exec -it oracle-ee-12c-slim bash
 [oracle@4e8847d675d0 /]$ sqlplus sys/Oradoc_db1@ORCLCDB as sysdba
 
 SQL*Plus: Release 12.2.0.1.0 Production on Tue Mar 16 23:13:49 2021
@@ -112,6 +116,7 @@ Oracle Database 12c Enterprise Edition Release 12.2.0.1.0 - 64bit Production
 데이터그립을 실행한 후 Database 탭 -> Data Source -> Oracle을 실행한다.
 
 ![Datagrip Data Source](./image4.png)
+<!-- [##_Image|kage@blnMKG/btq0oKiWcrw/jVDKd80sAu67Fi0LMKQdd1/img.png|alignCenter|width="100%"|_##] -->
 
 위 창이 뜨면 기본 설정값들을 입력한 후 접속한다.
 
@@ -135,7 +140,32 @@ FROM    DBA_USERS
 ```
 
 ![Datagrip Test](./image5.png)
+<!-- [##_Image|kage@bPMfLP/btq0qz826ry/aX5XC07bGYUpE98jyhBAGk/img.png|alignCenter|width="100%"|_##] -->
 
 위와 같이 사용자 목록이 뜨는 것을 확인할 수 있다.
+
+## 8. Docker Compose설정
+
+컨테이너 실행을 쉽게 하기 위해 Docker Compose를 구성한다. `docker-compose.yml`이란 파일을 만들고 아래와 같이 세팅한다. `volumes`는 로컬의 `./oracle` 컨테이너의 `/opt/oracle/oradata`를 연결해준다.
+
+```yml
+version: "2"
+
+services:
+  oracle-ee-12c-slim:
+    image: infomuscle10/oracle-ee-12c-slim
+    container_name: oracle-ee-12c-slim
+    ports:
+      - "1521:1521"
+    environment:
+      - TZ=Asia/Seoul
+    volumes:
+      - ./oracle:/opt/oracle/oradata
+```
+
+터미널에서 해당 파일이 있는 곳으로 가 아래 커맨드로 서비스를 실행시킨다. 
+```bash
+$ docker-compose up -d
+```
 
 > 학습 중인 책에서는 oracle 11g를 사용하는데, 오라클에서 제공하는 공식 이미지는 12c 밖에 없어서 12c로 설치를 진행하며 포스팅을 작성했었다. 그런데 12c에는 학습용 SCOTT 계정이 없고, 만드는 방법도 모르겠다. 포스팅은 아까우니 그대로 남겨두고, 11g 설치 후 SCOTT 계정 활성화까지 다시 포스팅할 예정.
