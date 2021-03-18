@@ -117,6 +117,7 @@ Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production
 어찌 된 일인지 이렇게 생성된 오라클 컨테이너의 DBA_USERS 테이블을 살펴보면 `SCOTT` 계정이 없다. 다른 이미지도 받아보고, 열심히 알아봤지만 그냥 `SCOTT` 계정을 직접 생성하는 게 낫다고 판단했다. 작업을 쉽게 하기 위해 우선 Datagrip에 접속한다.
 
 ![Datagrip New Data Source](./image1.png)
+<!-- [##_Image|kage@bE1TK8/btq0pyiKhT1/t4kOEYusKND86vdxKmFTF0/img.png|alignCenter|width="100%"|_##] -->
 
 Database 탭 -> + 버튼 -> Data Source -> Oracle을 실행한다. 다른 건 다 기본값이고, `User`와 `Password`만 입력해주면 된다. `OK` 버튼을 누르면 자동으로 쿼리 콘솔이 나온다.
 
@@ -138,6 +139,7 @@ GRANT CONNECT, RESOURCE, DBA TO scott;
 ```
 
 ![Datagrip Connect SCOTT](./image2.png)
+<!-- [##_Image|kage@OBghy/btq0obheowE/qXa99fLk7idXJjbOHpQWPK/img.png|alignCenter|width="100%"|_##] -->
 
 그리고 위 그림처럼 `SCOTT` 계정으로 접속한 후 아래 쿼리로 데이터를 세팅한다.
 
