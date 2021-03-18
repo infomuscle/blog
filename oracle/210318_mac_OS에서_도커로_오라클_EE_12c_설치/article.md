@@ -66,7 +66,7 @@ $ docker run -d -it --name <Oracle-DB> -p 1521:1521 -e "TZ=Asia/Seoul" store/ora
 
 - 도커 실행 옵션
     - `-d`: 컨테이너를 detached(백그라운드)로 실행
-    - `-it`:
+    - `-it`: 표준 입력 활성화 && TTY 모드 사용
     - `--name <Oracle-DB>`: 컨테이너 이름을 \<Oracle-DB\>로 지정
     - `-p 1521:1521`: 로컬포트:컨테이너포트를 연결. 1521은 오라클 포트.
     - `-e "TZ=Asia/Seoul"`: Time Zone을 Asia/Seoul로 설정 
