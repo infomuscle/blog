@@ -24,22 +24,19 @@ ukhomeofficedigital/oracle-xe-11g   Oracle Database Express Edition 11g Containe
 jaspeen/oracle-xe-11g               Fork from sath89/docker-oracle-xe-11g - smal…   3                    [OK]
 ```
 
-이 중에서 star 수도 적당히 있고, 현재 학습 중인 책에서 사용하는 것과 동일한 버전인 `wnameless/oracle-xe-11g-r2` 이미지로 컨테이너를 실행하겠다.
+이 중에서 star 수도 적당히 있고, 현재 학습 중인 책에서 사용하는 것과 동일한 버전인 `wnameless/oracle-xe-11g-r2` 이미지로 컨테이너를 실행하겠다. 프로세스가 완료되면 `images` 커맨드로 이미지를 확인할 수 있다.
 
 ```bash
 $ docker pull wnameless/oracle-xe-11g-r2
-```
-
-프로세스가 완료되면 `images` 커맨드로 이미지를 확인한다.
-
-```bash
 $ docker images
 
 REPOSITORY                        TAG       IMAGE ID       CREATED         SIZE
 wnameless/oracle-xe-11g-r2        latest    0d19fd2e072e   17 months ago   2.1GB
 ```
 
-꼭 필요한 작업은 아닌데, 이미지 관리를 편하게 하려고 이미지 이름을 바꾸고 도커 Hub에 푸시해두겠다. 이후로는 바뀐 이미지명이 기준이 된다.
+### Tip. 도커 이미지 이름 변경
+
+이미지 관리를 편하게 하려고 이미지 이름을 바꾸고 도커 Hub에 푸시해두겠다. 이후로는 바뀐 이미지명이 기준이 된다.
 
 ```bash
 $ docker image tag wnameless/oracle-xe-11g-r2 infomuscle10/oracle-xe-11g-r2
@@ -99,7 +96,8 @@ $ docker-compose up -d
 
 ## 3. SQLPlus 접속
 
-SQLPlus
+SQLPlus에 접속해서 컨테이너 정상 구동 여부를 확인한다.
+
 ```bash
 $ docker exec -it oracle-xe-11g-r2 bash                                                                                                           126 ↵
 root@345529e24e11:/# sqlplus system/oracle
@@ -116,7 +114,7 @@ Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production
 
 ## 4. Datagrip 접속
 
-어찌 된 일인지 이렇게 생성된 오라클 컨테이너의 DBA_USERS 테이블을 살펴보면 SCOTT 계정이 없다. 다른 이미지도 받아보고, 열심히 알아봤지만 그냥 SCOTT 계정을 직접 생성하는 게 낫다고 판단했다. 작업을 쉽게 하기 위해 우선 Datagrip에 접속한다.
+어찌 된 일인지 이렇게 생성된 오라클 컨테이너의 DBA_USERS 테이블을 살펴보면 `SCOTT` 계정이 없다. 다른 이미지도 받아보고, 열심히 알아봤지만 그냥 `SCOTT` 계정을 직접 생성하는 게 낫다고 판단했다. 작업을 쉽게 하기 위해 우선 Datagrip에 접속한다.
 
 ![Datagrip New Data Source](./image1.png)
 
@@ -126,7 +124,7 @@ Database 탭 -> + 버튼 -> Data Source -> Oracle을 실행한다. 다른 건 �
 - `Password`: oracle
 
 
-## 5. SCOTT 게정 생성
+## 5. SCOTT 계정 생성
 
 쿼리 콘솔에서 아래 쿼리로 SCOTT 계정을 생성하고, 권한을 부여한다.
 
@@ -141,7 +139,7 @@ GRANT CONNECT, RESOURCE, DBA TO scott;
 
 ![Datagrip Connect SCOTT](./image2.png)
 
-그리고 위 그림처럼 SCOTT 계정으로 접속한 후 아래 쿼리로 SCOTT 계정 데이터를 세팅한다.
+그리고 위 그림처럼 `SCOTT` 계정으로 접속한 후 아래 쿼리로 데이터를 세팅한다.
 
 - `User`: scott
 - `Password`: tiger
@@ -259,3 +257,5 @@ COMMIT;
 SELECT  *
 FROM    EMP;
 ```
+
+> 맥으로 오라클 공부하기 정말 어렵다..
