@@ -33,6 +33,7 @@ https://hub.docker.com/_/oracle-database-enterprise-edition
 
 오라클 DB 도커 이미지 가이드 문서를 확인한다.
 
+
 ## 2. 터미널에서 도커 이미지 Pull
 
 위 가이드 문서에서 우측을 보면 빠르게 커맨드를 복사해서 터미널에 붙여넣을 수 있다. 그런데 오라클 이미지 용량이 상당하다. 그래서 여기서는 일부 기능을 없앤 슬림 버전을 사용하겠다. 가이드 문서의 맨 하단에서도 확인할 수 있다. 풀 버전 이미지는 약 3.5GB, 슬림 버전 이미지는 약 2.1GB다.
@@ -55,6 +56,7 @@ $ docker images
 REPOSITORY                         TAG             IMAGE ID       CREATED        SIZE
 store/oracle/database-enterprise   12.2.0.1-slim   27c9559d36ec   3 years ago    2.08GB
 ```
+
 
 ## 3. 도커 컨테이너 생성 
 
@@ -94,6 +96,7 @@ $ docker run -d -it --name oracle-ee-12c-slim -p 1521:1521 -e "TZ=Asia/Seoul" in
 $ docker push infomuscle10/oracle-ee-12c-slim
 ```
 
+
 ## 4. SQLPlus 접속
 
 실행 중인 컨테이너의 SQLPlus의 system 계정에 접속한다. 
@@ -110,6 +113,7 @@ Copyright (c) 1982, 2016, Oracle.  All rights reserved.
 Connected to:
 Oracle Database 12c Enterprise Edition Release 12.2.0.1.0 - 64bit Production
 ```
+
 
 ## 5. Datagrip 접속
 
@@ -144,6 +148,7 @@ FROM    DBA_USERS
 
 위와 같이 사용자 목록이 뜨는 것을 확인할 수 있다.
 
+
 ## 6. Docker Compose 설정
 
 컨테이너 실행을 쉽게 하기 위해 Docker Compose를 구성한다. `docker-compose.yml`이란 파일을 만들고 아래와 같이 세팅한다. `volumes`는 로컬의 `./oracle` 컨테이너의 `/opt/oracle/oradata`를 연결해준다.
@@ -164,6 +169,7 @@ services:
 ```
 
 터미널에서 해당 파일이 있는 곳으로 가 아래 커맨드로 서비스를 실행시킨다. 
+
 ```bash
 $ docker-compose up -d
 ```
