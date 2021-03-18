@@ -72,6 +72,30 @@ CONTAINER ID   IMAGE                             COMMAND                  CREATE
 345529e24e11   infomuscle10/oracle-xe-11g-r2   "/bin/sh -c '/usr/sb…"   About a minute ago   Up About a minute   22/tcp, 8080/tcp, 0.0.0.0:1521->1521/tcp   oracle-xe-11g-r2
 ```
 
+### Tip. Docker Compose 세팅
+
+Docker Compose로 컨테이너 실행을 쉽게 할 수 있다. 먼저 `docker-compose.yml` 파일을 생성한 후 아래 값을 세팅한다.
+
+```yml
+version: "2"
+
+services:
+  oracle-xe-11g-r2:
+    image: infomuscle10/oracle-xe-11g-r2
+    container_name: oracle-xe-11g-r2
+    ports:
+      - "1521:1521"
+    environment:
+      - TZ=Asia/Seoul
+    volumes:
+      - ./oracle-xe-11g-r2:/opt/oracle/oradata
+```
+
+해당 파일이 있는 디렉토리에서 아래 커맨드로 서비스를 실행한다. 
+
+```bash
+$ docker-compose up -d
+```
 
 ## 3. SQLPlus 접속
 
