@@ -2,14 +2,14 @@
 
 
 
-#### 시작 화면
+## 시작 화면
 
 인텔리제이 열기
 
 `NEW PROJECT` 버튼 클릭
 
 
-#### New Project 1
+## New Project 1
 
 좌측 탭에서 `Spring Initializr' 선택
 
@@ -17,7 +17,7 @@
 
 Default 선택 후 `NEXT` 버튼 클릭
 
-#### New Project 2 (Project Settings)
+## New Project 2 (Project Settings)
 
 Group 및 Artifact 설정
 
@@ -36,25 +36,25 @@ Maven || **Gradle** 선택
 > WAR: 외부 톰캣을 이용
 
 
-#### New Project 3 (Dependencies)
+## New Project 3 (Dependencies)
 
-###### Developer Tools
+### Developer Tools
 
 - Lombok
 
-###### Web
+### Web
 
 - Spring Web
 
-###### Template
+### Template
 
 - 기타(Thymeleaf, Freemarker, Mustache 등)
 
-###### Security
+### Security
 
 - 기타(Spring Security, OAuth2 등)
 
-###### SQL
+### SQL
 
 - Spring Data JPA
 
@@ -62,19 +62,19 @@ Maven || **Gradle** 선택
 
 - 기타 (JDBC, MyBatis, 기타 DB 드라이버 등) 
 
-###### NoSQL
+### NoSQL
 
 - 기타(MongoDB 등)
 
-###### Messaging
+### Messaging
 
 - 기타(RabbitMQ, Kafka 등)
 
-###### Observability
+### Observability
 
 - 기타(Datagdog, Influx, Prometheus 등)
 
-###### New Project 4
+### New Project 4
 
 프로젝트 이름 및 경로 세팅 후 `FINISH` 버튼 클릭
 
