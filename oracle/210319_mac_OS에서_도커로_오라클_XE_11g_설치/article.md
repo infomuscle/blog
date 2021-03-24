@@ -127,7 +127,7 @@ Database 탭 -> + 버튼 -> Data Source -> Oracle을 실행한다. 다른 건 �
 
 ## 5. SCOTT 계정 생성
 
-쿼리 콘솔에서 아래 쿼리로 SCOTT 계정을 생성하고, 권한을 부여한다.
+쿼리 콘솔에서 아래 쿼리로 SCOTT 계정을 생성하고, 권한을 부여한 뒤, `DBA_USERS` 테이블을 확인한다.
 
 ```sql
 CREATE USER scott
@@ -136,6 +136,9 @@ DEFAULT TABLESPACE users
 TEMPORARY TABLESPACE temp;
 
 GRANT CONNECT, RESOURCE, DBA TO scott;
+
+SELECT  *
+FROM    DBA_USERS;
 ```
 
 ![Datagrip Connect SCOTT](./image2.png)
