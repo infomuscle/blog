@@ -1,4 +1,4 @@
-# [Oracle] 오라클 데이터 조회하기
+# [Oracle] SELECT로 데이터 조회하기
 
 
 ## 셀렉션, 프로젝션, 조인
@@ -54,7 +54,7 @@ SQL> DESC SALGRADE;
 > DESC는 SQLPlus에서 지원된다. 다른 툴도 지원하는 경우가 있지만, 필수는 아니기 때문에 DESC 명령어를 사용할 수 없다면 SQLPlus에 접속해서 사용한다.
 
 
-### SELECT, FROM
+### SELECT, FROM - 기본 조회
 
 SELECT문의 기본 구성은 다음과 같다. 
 
@@ -77,7 +77,8 @@ FROM    EMP
 ;
 ```
 
-![SELECT 1](./image1.png)
+![전체 열 출력하기](./image1.png)
+<!-- [##_Image|kage@bbqdGm/btq0XqriDEQ/Sjcp59u3LCTlYVlctS7Bv0/img.png|alignCenter|width="100%"|_##] -->
 
 #### 특정 열만 출력하기
 
@@ -87,21 +88,31 @@ FROM    EMP
 SELECT  EMPNO
       , ENAME
       , DEPTNO
-FROM EMP
+FROM    EMP
 ;
 ```
 
-![SELECT 2](./image2.png)
+![특정 열 출력하기](./image2.png)
+<!-- [##_Image|kage@cFXUs2/btq0SFXgaG6/6YII0B5qAMt7UCoxGDkUvk/img.png|alignCenter|width="100%"|_##] -->
 
-### DISTINCT, ALL
+> [MEMO]  
+> SQL은 대소문자를 구분하지 않으나 다른 프로그래밍 언어와 구분하기 위해 대문자로 표기하는 것이 권장된다.
+
+
+### DISTINCT, ALL - 중복 제거
 
 `SELECT` 다음에 `DISTINCT`를 붙여 조회한 데이터의 중복을 제거할 수 있다.
 
 ```sql
 SELECT DISTINCT DEPTNO
 FROM            EMP
-;
+음
 ```
+
+![중복 제거 1](./image3.png)
+<!-- [##_Image|kage@bkU328/btq0Tu2jKo4/5JhLrtKAmX16ufP5vqQIUK/img.png|alignCenter|width="100%"|_##] -->
+
+#### 중복의 기준 
 
 조회하는 열이 여러 개일 경우, 모든 열의 데이터가 같을 때 중복으로 간주한다.
 
@@ -112,18 +123,30 @@ FROM            EMP
 ;
 ```
 
+![중복 제거 2](./image4.png)
+<!-- [##_Image|kage@rfSBn/btq0Xo737Ln/pjK6LHRC6GWrbEwRXS6uhK/img.png|alignCenter|width="100%"|_##] -->
+
+#### 중복 제거 없음
+
 `ALL`은 중복 제거 없이 모든 데이터를 출력한다. 기본값이기 때문에 `SELECT`만 사용해도 같은 결과를 볼 수 있다.
 
 ```sql
 SELECT ALL DEPTNO
-FROM            EMP
+FROM       EMP
 ;
 ```
 
+![모든 열 출력](./image5.png)
+<!-- [##_Image|kage@00FYO/btq0ZKI6q6b/sIK4alFjk2USHjv0SejhKk/img.png|alignCenter|width="100%"|_##] -->
 
-### AS
+
+### AS - 별칭 지정
 
 `SELECT`문을 사용할 경우, 입력한 컬럼값이 조회 결과 최상단에 보여진다. 이 때 보여지는 열 이름을 임의로 변경한 이름을 `별칭(Alias)`이라고 부른다. 컬럼명 옆에 `AS`를 붙여서 지정할 수 있다. 
+
+#### 연산식
+
+SQL은 데이터를 단순 불러올 뿐만 아니라, 연산을 적용한 결과를 보여줄 수도 있다. 아래와 같이 SQL을 작성할 경우 각 행마다 `SAL` 값에 12를 곱하고 `COMM` 값을 더한 값을 보여주는 열이 생성된다. 
 
 ```sql
 SELECT  ENAME
@@ -134,7 +157,12 @@ FROM    EMP
 ;
 ```
 
-위와 같이 SQL을 작성할 경우 각 행마다 `SAL` 값에 12를 곱하고 `COMM` 값을 더한 값을 보여주는 열이 생성된다. 조회 결과 최상단을 보면 컬럼명이 `SAL*12+COMM`으로 되어있음을 알 수 있다. 예제에서는 비교적 간단하지만, 실무에서는 연산이 훨씬 복잡하고 길어질 수 있다. 이런 경우를 위해 아래와 같이 AS를 사용하여 컬럼명을 바꿀 수 있다.
+![별칭 없음](./image6.png)
+<!-- [##_Image|kage@brtYaF/btq01qwQ7jO/HjrbHHSJGUrBhVfAz5whRK/img.png|alignCenter|width="100%"|_##] -->
+
+#### 별칭 지정하기
+
+위 쿼리의 결과를 보면 컬럼명이 `SAL*12+COMM`으로 되어있음을 알 수 있다. 예제에서는 비교적 간단하지만, 실무에서는 연산이 훨씬 복잡하고 길어질 수 있다. 또는 의미를 명확히 하거나, 해당 값이 어떤 연산식을 거쳤는지 비밀에 부쳐야할 수도 있다. 이런 경우를 위해 아래와 같이 AS를 사용하여 컬럼명을 바꿀 수 있다.
 
 ```sql
 SELECT  ENAME
@@ -145,6 +173,11 @@ FROM    EMP
 ;
 ```
 
+![별칭 지정](./image7.png)
+<!-- [##_Image|kage@8Iutg/btq0XP5qWPY/UfksIK99anBbKRDkpIeh4K/img.png|alignCenter|width="100%"|_##] -->
+
+#### 별칭을 지정하는 여러가지 방법
+
 `AS`는 생략 가능하고, 별칭을 따옴표로 구분할 수도 있다. 즉 총 4가지 방식으로 표현 가능하다. 일반적으로 3번을 가장 선호한다.     
 1. SAL\*12+COMM ANNSAL  
 2. SAL\*12+COMM "ANNSAL"  
@@ -153,7 +186,8 @@ FROM    EMP
 
 `AS`로 어떤 단어가 별칭인지 구분하는 것이 편하고, `"`를 사용할 경우에는 프로그래밍 언어와 SQL을 같이 사용할 경우 문자열의 구분에서 혼란을 일으킬 수 있기 때문이다.
 
-### ORDER BY
+
+### ORDER BY - 정렬
 
 `SELECT`문은 기본적으로 정렬 순서를 보장하지 않는다. 그래서 `ORDER BY`를 가장 마지막에 붙여 정렬 순서를 지정할 수 있다.
 
@@ -163,6 +197,9 @@ FROM        EMP
 ORDER BY    SAL
 ;
 ```
+
+![기본 정렬](./image8.png)
+<!-- [##_Image|kage@bMEP2n/btq0Vn9pPjB/GCulVJ2h1x4sYQC4YmMHO0/img.png|alignCenter|width="100%"|_##] -->
 
 #### DESC, ASC
 
@@ -175,7 +212,12 @@ ORDER BY    SAL DESC
 ;
 ```
 
+![내림차순](./image9.png)
+<!-- [##_Image|kage@c1q0Vd/btq0Tt966Sp/geU1oi8CGqp6kQgOVekfHk/img.png|alignCenter|width="100%"|_##] -->
+
 #### 정렬 기준이 여러개일 경우
+
+정렬 기준을 여러개 주고 싶을 경우, 우선순위에 맞게 컬럼명을 명시하면 된다.
 
 ```sql
 SELECT      *
@@ -184,11 +226,10 @@ ORDER BY    DEPTNO ASC, SAL DESC
 ;
 ```
 
+![여러 정렬 기준](./image10.png)
+<!-- [##_Image|kage@WprNT/btq0SG9G139/hicPlZiMCOYM0zoXKMk3ak/img.png|alignCenter|width="100%"|_##] -->
+
 > [MEMO]  
 > 정렬은 상당한 비용을 소모할 수 있기 때문에 꼭 필요한 경우에만 사용한다.
-
-
-> [MEMO]  
-> SQL은 대소문자를 구분하지 않으나 다른 프로그래밍 언어와 구분하기 위해 대문자로 표기하는 것이 권장된다. 
 
 > 해당 포스팅은 학습을 위해 서적 \[오라클로 배우는 데이터베이스 입문\]의 내용을 요약 정리했습니다.
