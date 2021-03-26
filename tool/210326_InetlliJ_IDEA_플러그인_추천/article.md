@@ -8,7 +8,7 @@
 <!-- [##_Image|kage@b0S14N/btq06g2TJox/ll5ewiXbutTuriGsonPoy1/img.png|alignCenter|width="100%"|_##] -->
 
 - 인텔리제이 에디터를 Vim처럼 사용할 수 있는 플러그인
-- 유용도: :star: :star: :star: :star: :star:
+- 유용도: ⭐️ ⭐️ ⭐️ ⭐️ ⭐️
 - [플러그인 홈페이지](https://plugins.jetbrains.com/plugin/164-ideavim)
 - [깃허브](https://github.com/JetBrains/ideavim)
 
@@ -20,7 +20,7 @@ Vim 없이 어떻게 컴퓨터로 글을 썼나 싶을 정도로 잘 쓰고 있�
 <!-- [##_Image|kage@oTUw0/btq04LI58dC/D1ziIk8IzKkiwLa6VURoMk/img.gif|alignCenter|width="100%"|_##] -->
 
 - 클릭한 버튼의 단축키를 알람처럼 표시해주는 플러그인
-- 유용도: :star: :star: :star:
+- 유용도: ⭐️ ⭐️ ⭐️
 - [플러그인 홈페이지](https://plugins.jetbrains.com/plugin/9792-key-promoter-x)
 - [깃허브](https://github.com/halirutan/IntelliJ-Key-Promoter-X)
 
@@ -32,7 +32,7 @@ Vim 없이 어떻게 컴퓨터로 글을 썼나 싶을 정도로 잘 쓰고 있�
 <!-- [##_Image|kage@bnw3nY/btq03GnYz92/E92aoTU7coHxzvNKFIjSb1/img.png|alignCenter|width="100%"|_##] -->
 
 - 괄호 쌍마다 색깔을 지정하여 가독성을 높여주는 플러그인
-- 유용도: :star: :star: :star: :star:
+- 유용도: ⭐️ ⭐️ ⭐️ ⭐️
 - [플러그인 홈페이지](https://plugins.jetbrains.com/plugin/10080-rainbow-brackets)
 - [공식 문서](https://izhangzhihao.github.io/rainbow-brackets-document/)
 
@@ -44,7 +44,7 @@ Vim 없이 어떻게 컴퓨터로 글을 썼나 싶을 정도로 잘 쓰고 있�
 <!-- [##_Image|kage@DjJrh/btq09jR8mqt/Kic4QEEFFFkJQuAjtCJRH1/img.png|alignCenter|width="100%"|_##] -->
 
 - 미니맵을 보여주는 플러그인
-- 유용도: :star: 
+- 유용도: ⭐️ ⭐️ ⭐️ ⭐️   
 - [플러그인 홈페이지](https://plugins.jetbrains.com/plugin/7275-codeglance)
 - [깃허브](https://github.com/Vektah/CodeGlance)
 
@@ -56,7 +56,7 @@ Vim 없이 어떻게 컴퓨터로 글을 썼나 싶을 정도로 잘 쓰고 있�
 <!-- [##_Image|kage@CME27/btq09zf9yOj/AWXFUXYE54oAbOQOuaKUaK/img.png|alignCenter|width="100%"|_##] -->
 
 - 깃 관련 편의를 제공하는 플러그인
-- 유용도: :star: :star:
+- 유용도: ⭐️ ⭐️
 - [플러그인 홈페이지](https://plugins.jetbrains.com/plugin/7499-gittoolbox)
 - [깃허브](https://github.com/zielu/GitToolBox/wiki/Manual)
 
@@ -68,7 +68,7 @@ Vim 없이 어떻게 컴퓨터로 글을 썼나 싶을 정도로 잘 쓰고 있�
 <!-- [##_Image|kage@crBSD3/btq0iAPwOsj/pkigPB6o7ydLsi3AMUpPp1/img.png|alignCenter|width="100%"|_##] -->
 
 - 아이콘을 Material 디자인으로 바꿔주는 플러그인
-- 유용도: :star: :star: :star: :star: :star:
+- 유용도: ⭐️ ⭐️ ⭐️ ⭐️ ⭐️
 - [플러그인 홈페이지](https://plugins.jetbrains.com/plugin/10044-atom-material-icons)
 
 IDE 상에서 보여지는 아이콘들을 이쁘게 바꿔준다. 언어별 로고나, 디렉토리 네이밍에 따라 적합한 디자인으로 보여지기 때문에 가독성이 좋아진다.
@@ -79,7 +79,7 @@ IDE 상에서 보여지는 아이콘들을 이쁘게 바꿔준다. 언어별 로
 <!-- [##_Image|kage@cDtcfD/btq04MaceTh/ti0B66cJfME4K5tSSrUd31/img.png|alignCenter|width="100%"|_##] -->
 
 - One Dark 테마로 바꿔주는 플러그인
-- 유용도: :star: :star: :star: :star: :star: 
+- 유용도: ⭐️ ⭐️ ⭐️ ⭐️ ⭐️ 
 - [플러그인 홈페이지](https://plugins.jetbrains.com/plugin/11938-one-dark-theme)
 
 여러 테마를 써보다가 이 테마에 거의 정착을 했다. 가독성이 여러 언어에서 종합적으로 만족스럽다. Pycharm, WebStorm 등 JetBrains의 IDE만 쓰는 편인데, 개인 맥북이나 회사 윈도우 데스크탑의 모든 IDE를 이 테마로 적용하니깐 시각적으로 적응하기 상당히 좋다.
@@ -90,7 +90,7 @@ IDE 상에서 보여지는 아이콘들을 이쁘게 바꿔준다. 언어별 로
 <!-- [##_Image|kage@bNvrRA/btq039pXDrU/2eZkib2MBIZPqcKiZqVvSK/img.png|alignCenter|width="100%"|_##] -->
 
 - 다양한 Material Design 테마를 제공하는 플러그인
-- 유용도: :star: :star: :star: 
+- 유용도: ⭐️ ⭐️ ⭐️ 
 - [플러그인 홈페이지](https://plugins.jetbrains.com/plugin/8006-material-theme-ui)
 
 위에 One Dark 테마를 사용하기 전까진 이걸 사용했었다. 다양한 Material 테마를 제공한다. 이걸 사용할 때는 IDE별로 다른 테마를 사용해서 언어별로 최적화를 시켰었다. 
