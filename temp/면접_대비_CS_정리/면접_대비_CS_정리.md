@@ -26,8 +26,19 @@
 ### 바이트코드
 > 자바는 JVM을 이용한 플랫폼 독립적이라는 특징이 있습니다. 자바에서 코드를 컴파일하면 바이트코드 즉 (.class)형태로 출력이 되는데 이 Class형태는 JVM에 의해 런타임시완벽한 기계코드로 변경되어 실행됩니다. 따라서 JVM만 있으면 재컴파일 없이 여러 플랫폼에서 똑같이 실행되는 장점이 있습니다. 추가적으로 자바의 장점으로는 포인터 연산이 필요 없고 객체지향이라는 점, 그리고 멀티쓰레딩, 네트워킹 API를 제공한다는 점을 들 수 있습니다. 단점으로는 JVM을 사용하기 때문에 발생하는데요, JVM은 많은 메모리를 사용하고 실행속도 또한 빠르지 않습니다. 또 바이트 코드를 완전한 기계코드로 변환하는 과정에서 일반적인 컴파일 언어보다 속도가 많이 느리다는 단점이 있습니다.
 
-### 기본 자료형 vs 참조 자료형
-- `byte`, `short`, `int`, `long`, `float`, `double`, `char`, `boolean`
+### 자료형
+
+#### 기본 자료형
+- `byte`: 1byte == 8bit == 2^8
+- `short`: 2byte == 16bit == 2^16
+- `int`: 4byte == 32bit == 2^32
+- `long`: 8byte == 64bit = 2^64
+- `float` : 4byte == 32bit == 2^32
+- `double`: 8byte == 64bit == 2^64
+- `char`: 2byte == 16bit == 2^16
+- `boolean`: 1byte == 8bit == 2^8
+
+#### 참조 자료형
 
 ### 접근제어자
 - `public`: 어디서나 접근 가능
@@ -79,12 +90,35 @@
 
 
 ## 데이터베이스
--	Table 인덱스 장점
+
+### Table 인덱스 장점
 
 
 ## 운영체제
-- 메모리 구조
-    - 스택 – 힙 – 데이터 – 코드
-- 동적할당
-- 프로세스 vs 쓰레드
-- 힙 vs 스택
+
+### 메모리 구조
+
+|영역|설명|
+|---|---|
+|코드||
+|데이터||
+|힙||
+|스택||
+
+### 동적할당
+
+### 프로세스 vs 쓰레드
+
+### 힙 vs 스택
+
+## 기타
+
+### MyBatis vs JPA
+
+##  참고
+- https://martianlee.github.io/posts/naver-interview-review/
+- https://remover.tistory.com/177
+- https://jw910911.tistory.com/8
+- https://dongza.tistory.com/m/13
+- https://github.com/JaeYeopHan/Interview_Question_for_Beginner
+- https://github.com/MaximAbramchuck/awesome-interview-questions
