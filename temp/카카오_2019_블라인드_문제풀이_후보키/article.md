@@ -63,3 +63,5 @@ def solution(relation):
     2. 최소 여부 체크
 
 # STEP 1
+
+# STEP 2
