@@ -1,6 +1,7 @@
 # [Algorithm] 2019 카카오 블라인드 테스트 문제풀이 - 무지의 먹방 라이브
 
 ![2019 카카오 블라인드 테스트](./image.jpeg)
+<!-- [##_Image|kage@b2WVsb/btq27UjWLhZ/mgxtc9BAyRlXYqKrp6zjN1/img.jpg|alignCenter|width="100%"|_##] -->
 
 ## 문제
 
@@ -65,7 +66,8 @@ def solution(food_times, k):
 
 ### 테스트 케이스
 
-![이미지1](./image1.png)
+![테스트 케이스](./image1.png)
+<!-- [##_Image|kage@TUYY9/btq285yNQgn/XOpmCe3c4hqX0b5v2M4ov1/img.png|alignCenter|width="100%"|_##] -->
 
 - `food_times`: [10, 8, 4, 10, 6, 9, 2, 7, 6, 8]
 - `k`: 48
@@ -91,7 +93,8 @@ if k >= sum(food_times):
 
 ### STEP 1: 수량의 오름차순으로 정렬
 
-![이미지2](./image2.png)
+![수량의 오름차순으로 정렬](./image2.png)
+<!-- [##_Image|kage@lIpht/btq3bWuhJBH/CHmCSLLGj90kCpVHh545k1/img.png|alignCenter|width="100%"|_##] -->
 
 ```python
 # 인덱스 = 음식번호-1
@@ -126,7 +129,8 @@ while True:
 
 #### Loop 1
 
-![이미지3](./image3.png)
+![루프 1](./image3.png)
+<!-- [##_Image|kage@dQrKy6/btq3cSSuSg8/aGGioGaIlb9MgiHdph8prK/img.png|alignCenter|width="100%"|_##] -->
 
 첫번째 루프에선 가장 수량이 적은 `7번` 음식부터 먹어치울 것이다. 시작하는 시점에서는 `total_eaten`과 `last_eaten`, 즉 총 먹은 양과 이전 루프에서 먹은 양이 모두 0이다. 
 
@@ -141,7 +145,8 @@ while True:
 
 #### Loop 2
 
-![이미지4](./image4.png)
+![루프 2](./image4.png)
+<!-- [##_Image|kage@bzmHRm/btq3dO99sac/RIrCdLct2IoQSMK9dRiYn1/img.png|alignCenter|width="100%"|_##] -->
 
 두번째 루프에서는 `3번` 음식을 다 먹을 것이다. `3번` 음식의 원래 수량은 4였다. 그러나 이미 앞 루프에서 2개는 먹어버렸다. 이걸 구하기 위해 `last_eaten` 변수를 갖고 있는 것이다.
 
@@ -156,7 +161,8 @@ while True:
 
 #### Loop 3
 
-![이미지5](./image5.png)
+![루프 3](./image5.png)
+<!-- [##_Image|kage@FxMQK/btq3buSnpkg/eqCM9Rs4DvzqNtE6yyJReK/img.png|alignCenter|width="100%"|_##] -->
 
 세번째 루프에서는 '시간 여유가 있다면' 8번 음식을 다 먹을 것이다. 단서를 붙인 이유는 이번에 루프를 빠져나올 것이기 때문.
 
@@ -169,7 +175,8 @@ while True:
 
 #### Before Break
 
-![이미지6](./image6.png)
+![남은 음식](./image6.png)
+<!-- [##_Image|kage@efWhds/btq3casnhXQ/wNzGEHApLy0OVRSe1Tj6LK/img.png|alignCenter|width="100%"|_##] -->
 
 ```python
 foods = sorted(foods, key=lambda x: x[0])
@@ -180,7 +187,7 @@ foods = sorted(foods, key=lambda x: x[0])
  > 아래 투명한 부분은 이전 루프에서 먹은 부분들이다. 실제로 수량을 빼주는 로직은 없었기 때문에 실제 데이터는 투명한 부분을 포함된 수량이 저장되어 있다. 하지만 정답을 도출하는데에는 의미가 없다. 
 
 
-## STEP3
+## STEP3: 남은 음식에서 남은 시간 후 먹을 음식 찾기
 
 ```python
 # 남은 시간 = k - 총 먹은 양
