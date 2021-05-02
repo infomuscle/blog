@@ -7,6 +7,7 @@
 
 - [알고리즘](./algorithm)
 - [자바](./java)
+    - [JVM Garbage Collector](./java/210501_JVM_Garbage_Collector)
 - [스프링](./spring)
 - [파이썬](./python)
 - [오라클](./oracle)
