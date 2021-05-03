@@ -16,7 +16,7 @@
 ![Project SDK 세팅](./image2.png)
 <!-- [##_Image|kage@wFTRs/btq3YLT4ZrI/DqBnKmn49keutQgF9fZP90/img.png|alignCenter|width="100%"|_##] -->
 
-- 좌측 탭에서 `Spring Initializr' 선택
+- 좌측 탭에서 `Spring Initializr` 선택
 - `Project SDK`에서 원하는 버전 선택
 - Default 선택 후 `NEXT` 버튼 클릭
 
