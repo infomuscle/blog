@@ -27,3 +27,17 @@
 - [툴](./tool)
     - [마크다운 문법 정리](./tool/210305_마크다운_문법_정리)
     - [IntelliJ IDEA 플러그인 추천](./tool/210326_InetlliJ_IDEA_플러그인_추천)
+
+
+
+
+### 작성 예정
+- MyBatis #과 $의 차이
+- SOLID
+- JPA, Hibernate, Spring Data JPA
+- @Transactional
+- OSI 7 Layer
+- AOP
+- Vim 사용법
+- Oracle 자료형 정리
+- 자바 스트림
