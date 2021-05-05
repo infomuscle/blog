@@ -18,5 +18,6 @@
 - `cmd` + `opt` + `M`: 함수 추출
 - `cmd` + `opt` + `V`: Introduce Variable
 - `cmd` + `opt` + `L`: 코드 포맷
+- `cmd` + `opt` + `N`: 인라인
 
 - `Shift` + `F6`: 변수명 변경
