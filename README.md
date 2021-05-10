@@ -38,6 +38,7 @@
 - @Transactional
 - OSI 7 Layer
 - AOP
+- Ioc, DI
 - REST API
 - 통합 테스트와 단위 테스트
 - Oracle 자료형 정리
@@ -46,3 +47,154 @@
 - 스프링부트 배너 변경
 - xor 스왑
 - 자료형과 2의 보수
+- 로드밸런서
+- GC 튜닝
+- MyBatis @Alias
+
+
+
+# 내가 보기 위한 CS 초간단 요약
+
+## 자바
+
+### 객체지향
+- 특징
+    - `추상화`: 객체들의 공통적인 특징, 데이터와 기능을 도출하는 것. (ex) class )
+    - `캡슐화`: 객체의 역할을 수행하기 위한 하나의 목적을 위해 데이터와 기능들을 묶는 것.(공개 필요X )
+    - `상속성`: 새로운 클래스가 기존의 클래스의 자료와 연산을 이용하게 해주는 것
+    - `다형성`: 한 요소에 여러 개념을 넣어 놓은것 (오버라이딩,오버로딩)
+    
+- 장점
+    - 코드의 재사용성
+    - 개발 및 유지보수에 효율적
+    - 캡슐화를 통해 데이터의 올바른 값 유지
+    - 다형성을 통한 매소드의 활용
+
+> 실세계의 사물을 추상화하여 멤버 변수와 메소드를 정의. 캡슐화를 통해 이와 같은 멤버변수와 메소드의 이용가능 범위를 적정하게 제한. 상속을 이용하여 부모 클래스의 기능을 자식클래스에서 물려받거나 재정의를 통해 다른 기능을 구현하는 다형성 실현
+
+### 바이트코드
+> 자바는 JVM을 이용한 플랫폼 독립적이라는 특징이 있습니다. 자바에서 코드를 컴파일하면 바이트코드 즉 (.class)형태로 출력이 되는데 이 Class형태는 JVM에 의해 런타임시완벽한 기계코드로 변경되어 실행됩니다. 따라서 JVM만 있으면 재컴파일 없이 여러 플랫폼에서 똑같이 실행되는 장점이 있습니다. 추가적으로 자바의 장점으로는 포인터 연산이 필요 없고 객체지향이라는 점, 그리고 멀티쓰레딩, 네트워킹 API를 제공한다는 점을 들 수 있습니다. 단점으로는 JVM을 사용하기 때문에 발생하는데요, JVM은 많은 메모리를 사용하고 실행속도 또한 빠르지 않습니다. 또 바이트 코드를 완전한 기계코드로 변환하는 과정에서 일반적인 컴파일 언어보다 속도가 많이 느리다는 단점이 있습니다.
+
+### 자료형
+
+#### 기본 자료형
+- `byte`: 1byte == 8bit == 2^8
+- `short`: 2byte == 16bit == 2^16
+- `int`: 4byte == 32bit == 2^32
+- `long`: 8byte == 64bit = 2^64
+- `float` : 4byte == 32bit == 2^32
+- `double`: 8byte == 64bit == 2^64
+- `char`: 2byte == 16bit == 2^16
+- `boolean`: 1byte == 8bit == 2^8
+
+#### 참조 자료형
+
+### 접근제어자
+- `public`: 어디서나 접근 가능
+- `protected`: 같은 패키지 및 자식 클래스에서 접근 가능
+- `default`: 같은 패키지에서만 접근 가능
+- `private`: 클래스 내부에서만 접근 가능 
+
+### 추상 클래스(abstract class)와 인터페이스(interface)..
+
+### 컬렉션(collection) 클래스에서 제네릭을 사용하는 이유.
+
+### 래퍼 클래스(wrapper class)
+
+### JVM 가비지 컬렉터
+
+- Stack의 변수는 Heap의 오브젝트를 참조한다. 변수와 오브젝트의 연결이 끊어진 상태를 Unreachable, JVM GC는 이 상태의 오브젝트에 대해 메모리를 해제한다.
+- Heap은 Young과 Old로 구분되고, Young은 또 Eden과 Survival들로 구분된다. 각 영역이 찰 때 GC가 발생하고, 살아남은 오브젝트를 다른 영역으로 옮긴다. Young을 Minor GC, Old를 Major GC라고 부른다.
+- 오브젝트는 처음 Eden에 생성. Eden에서 살아남으면 Survival로 이동. Survival에서 살아남은 건 다른 Survival로 이동. 왔다갔다 하다가 특정 age에 도달하면 Old로 이동.
+- GC 전략에는 무엇이 있을까?
+
+## 스프링
+- MVC 패턴
+    - `Controller`: 사용자로부터 요청을 받는 영역
+    - `Model`: 데이터를 처리하는 영역
+    - `View`: 처리 결과를 바탕으로 응답을 표시하는 영역
+
+- IoC, DI
+
+## 네트워크
+
+### OSI 7 Layer
+
+- `Physical Layer`: 비트를 전자기파로 바꾸는 역할. PHY였나? 물리적으로 구현되어 있다.
+- `Data Link Layer`: 내용 앞뒤로 구분자(?)를 추가하는 역할. Lan 카드인가 물리적으로 구현되어 있다.
+- `Network Layer`: 주소 추가.
+- `Transport Layer`: 포트 추가.
+- `Application Layer`: 현대에 5~7은 Application Layer로 통합.
+- 5와 6은 무엇을 할까? 
+
+### HTTP 프로토콜
+- `Hyper Text Transfer Protocol`
+- 구성
+    - Header
+    - Body
+
+### Restful API
+- 아키텍처
+- `Representational State Transfer`
+- HTTP URI(Uniform Resource Identifier)를 통해 자원(Resource)을 명시.
+- HTTP Method와 해당 자원에 대한 CRUD Operation 매핑
+    - `POST`: Create
+    - `GET`: Read
+    - `PUT`: Update
+    - `DELETE`: Delete
+- 장점
+    - 의도하는 바를 쉽게 파악할 수 있다.
+- 단점
+    - 표준이 없다.
+
+###  HTTP vs HTTPS
+
+### TCP vs UDP
+- `TCP`: 상호작용. 계속 확인함. 신뢰성 중요.
+- `UDP`: 보내고 끝. 빠름. 효율성 중요.
+
+
+## 데이터베이스
+
+### Table 인덱스 장점
+
+
+## 운영체제
+
+### 메모리 구조
+
+|영역|설명|
+|---|---|
+|코드||
+|데이터||
+|힙||
+|스택||
+
+### 스케줄링
+- Round Robin
+
+### 동적할당
+
+### 프로세스 vs 쓰레드
+
+### 힙 vs 스택
+
+- 힙은 동적, 스택은 정적
+- 스택에는 변수와 원시 타입 값이 저장.
+- 힙에는 오브젝트가 저장.
+
+## 소프트웨어 공학
+
+### SOLID
+
+## 기타
+
+### MyBatis vs JPA
+
+##  참고
+- https://martianlee.github.io/posts/naver-interview-review/
+- https://remover.tistory.com/177
+- https://jw910911.tistory.com/8
+- https://dongza.tistory.com/m/13
+- https://github.com/JaeYeopHan/Interview_Question_for_Beginner
+- https://github.com/MaximAbramchuck/awesome-interview-questions
