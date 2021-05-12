@@ -141,7 +141,8 @@
 - GC 전략에는 무엇이 있을까?
 
 
-## [String 데이터 비교](./temp/String_데이터_비교)
+## [String의 equals()와 hashCode()](./java/210513_String의_equals()와_hashCode())
+
 - 리터럴과 new의 차이
 - String Constant Pool
 - hashCode
