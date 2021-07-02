@@ -53,6 +53,7 @@
 - MyBatis @Alias
 - 깃북
 - 동시성 이슈와 ConcurrentHashMap
+- Jenkins, Docker, 빌드 및 배포 자동화
 
 
 
