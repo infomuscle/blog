@@ -13,6 +13,7 @@
 - [자바](./java)
     - [JVM Garbage Collector](./java/210501_JVM_Garbage_Collector)
     - [String의 equals()와 hashCode()](./java/210513_String의_equals()와_hashCode())
+    - [MyBatis #과 $의 차이](./java/210914_MyBatis_#과_$의_차이)
 - [스프링](./spring)
     - [스프링부트 어노테이션 정리](./spring/210315_스프링부트_어노테이션_정리)
     - [IntelliJ IDEA에서 Spring Boot 프로젝트 생성](./spring/210504_IntelliJ_IDEA에서_Spring_Boot_프로젝트_생성)
@@ -34,7 +35,6 @@
 
 
 ### 작성 예정
-- MyBatis #과 $의 차이
 - SOLID
 - JPA, Hibernate, Spring Data JPA
 - OSI 7 Layer
