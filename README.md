@@ -54,6 +54,7 @@
 - 깃북
 - 동시성 이슈와 ConcurrentHashMap
 - Jenkins, Docker, 빌드 및 배포 자동화
+- Java Static
 
 
 
@@ -277,3 +278,4 @@
 - https://dongza.tistory.com/m/13
 - https://github.com/JaeYeopHan/Interview_Question_for_Beginner
 - https://github.com/MaximAbramchuck/awesome-interview-questions
+- https://mellowp-dev.tistory.com/4
