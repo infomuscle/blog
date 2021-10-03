@@ -27,9 +27,10 @@
     - [mac OS에서 도커로 오라클 EE 12c 설치](./database/210318_mac_OS에서_도커로_오라클_EE_12c_설치)
     - [mac OS에서 도커로 오라클 XE 11g 설치](./database/210319_mac_OS에서_도커로_오라클_XE_11g_설치)
     - [SELECT로 데이터 조회하기](./database/210325_SELECT로_데이터_조회하기)
-- [툴](./tool)
+- [기타](./etcl)
     - [마크다운 문법 정리](./tool/210305_마크다운_문법_정리)
     - [IntelliJ IDEA 플러그인 추천](./tool/210326_InetlliJ_IDEA_플러그인_추천)
+    - [398일간의 1일 1커밋 회고](https://github.com/infomuscle/blog/tree/master/etc/210711_365%EC%9D%BC%EA%B0%84%EC%9D%98_1%EC%9D%BC_1%EC%BB%A4%EB%B0%8B_%ED%9A%8C%EA%B3%A0)
 
 
 
@@ -55,6 +56,8 @@
 - 동시성 이슈와 ConcurrentHashMap
 - Jenkins, Docker, 빌드 및 배포 자동화
 - Java Static
+- 스프링 의존관계 주입 방법 + 롬복
+- request 스코프
 
 
 
