@@ -15,6 +15,8 @@
     - [String의 equals()와 hashCode()](./java/210513_String의_equals()와_hashCode())
     - [MyBatis #과 $의 차이](./java/210914_MyBatis_%23과_%24의_차이)
     - [객체지향과 SOLID](./java/211011_객체_지향과_SOLID)
+- [네트워크](./network)
+    - [URI vs URL vs URN](./network/211012_URI_vs_URL_vs_URN)
 - [스프링](./spring)
     - [스프링부트 어노테이션 정리](./spring/210315_스프링부트_어노테이션_정리)
     - [IntelliJ IDEA에서 Spring Boot 프로젝트 생성](./spring/210504_IntelliJ_IDEA에서_Spring_Boot_프로젝트_생성)
