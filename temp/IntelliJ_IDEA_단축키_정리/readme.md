@@ -1,6 +1,6 @@
 # IntelliJ IDEA 단축키 정리
 
-내가 보고 쓰기 위한 IntelliJ IDEA 단축키 정리.
+내가 보고 쓰기 위한 IntelliJ IDEA 단축키 정리. 계속 추가 예정.
 
 
 
@@ -15,17 +15,17 @@
 |파라미터 보기|`cmd` + `P`|`ctrl` + `P`|
 |Git Pull|`cmd` + `T`|`ctrl` + `T`|
 |Preferences|`cmd` + `,`|`ctrl` + `alt` + `S`|
-|Project Structure|`cmd` + `;`|`ctrl` + `shift` +  `alt` + `S`|
-|리팩토링 관련|`ctrl` + `T`||
+|Project Structure|`cmd` + `;`|`shift` + `ctrl`  +  `alt` + `S`|
+|리팩토링 관련|`ctrl` + `T`|`shift` + `ctrl`  +  `alt` + `T`|
 |이전 실행 다시 실행|`ctrl` + `R`|`shift` + `F10`|
 |선택된 영역 실행|`ctrl` + `shift` +  `R`|`ctrl` + `shift` + `F10`|
-|디버그 모드 실행|`ctrl` + `D`||
+|디버그 모드 실행|`ctrl` + `D`|`shift` + `F9`|
 |테스트 코드 생성|`cmd` + `shift` + `T`|`ctrl` + `shift` + `T`|
-|구현체 보기|`ctrl` + `opt` + `B`||
+|구현체 보기|`ctrl` + `opt` + `B`|`ctrl` + `alt`+ `B`|
 |불필요한 import 제거|`ctrl` + `opt` + `O`|`ctrl` + `alt`+ `O`|
 |Introduce Variable(변수 자동 생성)|`cmd` + `opt` + `V`|`ctrl` + `alt`+ `V`|
 |코드 포맷|`cmd` + `opt` + `L`|`ctrl` + `alt`+ `L`|
-|메서드 추출|`cmd` + `opt` + `M`||
+|메서드 추출|`cmd` + `opt` + `M`|`ctrl` + `alt`+ `M`|
 |인라인|`cmd` + `opt` + `N`|`ctrl` + `alt`+ `N`|
 |파라미터 추출|`cmd` + `opt` + `P`|`ctrl` + `alt` + `P`|
 |이름 변경|`shift` + `F6`|`shift` + `F6`|
