@@ -224,10 +224,11 @@
 - `Representational State Transfer`
 - HTTP URI(Uniform Resource Identifier)를 통해 자원(Resource)을 명시.
 - HTTP Method와 해당 자원에 대한 CRUD Operation 매핑
-    - `POST`: Create
-    - `GET`: Read
-    - `PUT`: Update
-    - `DELETE`: Delete
+    - `POST`: 데이터 생성 요청. Create
+    - `GET`: 데이터 조회 요청.Read
+    - `PUT`: 데이터 수정 or 생성 요청. Create or Update
+    - `DELETE`: 데이터 삭제 요청. Delete
+    - `PATCH`: 데이터 수정 요청. Update
 - 장점
     - 의도하는 바를 쉽게 파악할 수 있다.
 - 단점
@@ -235,9 +236,13 @@
 
 ####  HTTP vs HTTPS
 
+- HTTP에 보안 계층을 추가하여 패킷 암호화.
+
 #### TCP vs UDP
-- `TCP`: 상호작용. 계속 확인함. 신뢰성 중요.
-- `UDP`: 보내고 끝. 빠름. 효율성 중요.
+- `TCP`: 상호작용. 파일 전송 등 신뢰성 중요.
+  - 3 way handshake: 가상회선 수립. SYN(n) -> ACK(n+1) + SYN(m) -> ACK(m+1). 
+  - 4 way handshake: 연결 해제.
+- `UDP`: 보내고 끝. 빠름. 스트리밍 등 효율성 중요.
 
 
 
@@ -399,6 +404,10 @@
 #### 메모리 누수
 
 - 더이상 사용되지 않는 메모리가 계속 점유되고 있는 현상. 자바에서는 GC에서 회수되지 않고 누적되는 경우를 부른다. old 영역에 객체가 누적됐으나, 해제되지 않으면서 메이저 GC가 빈번하게 발생하고 성능이 떨어진다.
+
+#### 메모리 컴팩션
+
+- 
 
 
 
