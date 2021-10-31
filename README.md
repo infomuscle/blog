@@ -195,10 +195,26 @@
     - `Controller`: 사용자로부터 요청을 받는 영역
     - `Model`: 데이터를 처리하는 영역
     - `View`: 처리 결과를 바탕으로 응답을 표시하는 영역
-
 - IoC, DI
+- @
 
+#### @Transactional
 
+- Propagation
+
+  |               | 트랜잭션 진행 중                         | 트랜잭션 미진행      |
+  | ------------- | ---------------------------------------- | -------------------- |
+  | REQUIRED      | 해당 트랜잭션 사용                       | 새로운 트랜잭션 생성 |
+  | MANDATORY     | 해당 트랜잭션 사용                       | 예외 발생            |
+  | REQUIRES_NEW  | 해당 트랜잭션 보류, 새로운 트랜잭션 생성 | 새로운 트랜잭션 생성 |
+  | SUPPORTS      | 해당 트랜잭션 사용                       | 트랜잭션 없이 진행   |
+  | NOT_SUPPORTED | 해당 트랜잭션 보류                       | 트랜잭션 없이 진행   |
+  | NEVER         | 예외 발생                                | 트랜잭션 없이 진행   |
+  | NESTED        | 중첩 트랜잭션 생성                       | 새로운 트랜잭션 생성 |
+
+- Isolation
+
+- Rollback
 
 ### 네트워크
 
@@ -362,12 +378,27 @@
 |힙|인스턴스|런타임에서 크기가 결정됨. 낮은 주소에서 높은 주소로 메모리 할당.|
 |스택|지역변수, 매개변수|컴파일에서 크기 결정. 높은 주소에서 낮은 주소로 메모리 할당.|
 
-#### 스케줄링
-- Round Robin
+- 
 
 #### 동적할당
 
 #### 프로세스 vs 쓰레드
+
+- Multi Process
+  - 하나의 프로그램을 여러 프로세스로 구성.
+  - 각 프로세스가 하나의 Task를 처리.
+  - 프로세스 하나가 잘못 되어도 동작은 하나, Context Switching 비용 발생
+- Multi Thread
+  - 하나의 프로세스를 여러 쓰레드로 구성.
+  - 각 쓰레드가 Task를 처리.
+  - 시스템 자원 소모, 처리 비용 등이 감소되나 동기화 이슈 발생 가능.
+  - 쓰레드 하나의 오류로 전체 프로세스 문제 발생 가능.
+- Context Switching
+  - CPU에서 여러 프로세스를 돌아가며 작업을 처리하는 과정
+- Thread Safe
+  - Multi-Thread 환경에서 안전하다.
+  - 함수가 전역 변수를 참조하고 있다면 Thread-Safe 하지 않을 수 있음
+  - synchronized 블록
 
 #### 메모리 파편화
 
@@ -407,7 +438,33 @@
 
 #### 메모리 컴팩션
 
-- 
+- 메모리 컴팩션
+
+#### 스케줄링
+
+- 선점
+  - Round Robin
+  - Shortest Remaint Time
+  - Multi Level Queue
+  - Multi Level Feedback Queue
+- 비선점
+  - First Come First Service == FIFO
+  - Shortest Job First
+  - Highest Respons-ratio Next
+
+#### 페이지 교체 알고리즘
+
+- LRU(Least Recently Used)
+  - 가정: 가장 오랫동안 사용하지 않은 페이지라면 앞으로도 사용할 확률이 적을 것이다.
+- FIFO(First In First Outs)
+  - 메모리에 올라온 페이지 순서대로 내보냄
+- LFU(Least Frequently Used)
+- MFU(Most Frequently Used)
+- NUR(Not Used Recently)
+- OPT(Optimal)
+  - 가장 오랫동안 사용되지 않을 페이지 교체
+  - 프로세스가 앞으로 사용할 페이지를 미리 알아야 함
+  - 이상적이나 실현 불가능
 
 
 
