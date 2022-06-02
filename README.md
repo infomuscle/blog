@@ -77,6 +77,7 @@
 - MSA 단점
 - Sentry
 - Mockito
+- MSA 트랜잭션
 
 
 ## 내가 보기 위한 CS 초간단 요약
