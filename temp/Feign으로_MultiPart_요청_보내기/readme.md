@@ -16,7 +16,7 @@
 requestpart.value() was empty on parameter 0
 ```
 
-로그를 살펴보니 특정 업체 `G`랑 통신하는 FeignClient 객체를 생성하는 과정에서 오류가 발생했고, 위 같은 에러 메시지를 확인했다. 구글링을 해보니 정확히 일치하는 케이스가 없다. 
+로그를 살펴보니 특정 업체 `G`랑 통신하는 `FeignClient` 객체를 생성하는 과정에서 오류가 발생했고, 위 같은 에러 메시지를 확인했다. 구글링을 해보니 정확히 일치하는 케이스가 없다. 
 
 
 
@@ -28,7 +28,7 @@ public interface GFeignClient extends MultiPartFeignClient {
 }
 ```
 
-해당 클래스를 열어보니, `@RequestPart` 어노테이션에서 `value` 파라미터에 값이 없어서 발생하는 걸로 보였다. 원래는 없어도 됐는데? 그래도 비어서 안 된다니 일단 임의로 값을 넣어보았다. 
+해당 클래스를 열어보니, `@RequestPart` 어노테이션에서 `value` 파라미터에 값이 없어서 발생하는 걸로 보였다. 원래는 없어도 됐는데? 
 
 
 
@@ -39,7 +39,7 @@ public interface GFeignClient extends MultiPartFeignClient {
   String order(@RequestPart(value="request") Map request);
 }
 ```
-스프링은 잘 떴다!
+그래도 비어서 안 된다니깐 임의로 값을 넣어보았다. 스프링은 잘 떴다!
 
 
 
@@ -66,11 +66,9 @@ public interface GFeignClient extends MultiPartFeignClient {
 }
 ```
 
-다시 기존 소스를 살펴보면 실제 호출시에 파라미터에는 `LinkedMultiValueMap`이 들어간다. DTO를 `LinkedMultiValueMap`으로 변환하고 파라미터에 넣으면 Feign에서 알아서 `multipart/form-data`에 맞게 HTTP Body를 생성해줬다. 근데 그게 2.2.2부터는 안 되는 상황. Feign 로그 레벨을 Full로 해봤다. 2.2.1까지는 제대로 Body가 생성된 게 로그에 찍히는데 새 버전에서는 Binary Data라고 퉁친다. FallbackFactory 생성해서 파라미터 찍어보기는 좀 귀찮아서 이전에는 `@RequestPart` 어노테이션을 붙이면 Map의 키마다 HTTP 메시지를 생성해줬는데, 파라미터 하나당 메시지 한 개로 스펙이 바뀐건 아닌가 추론해봤다. 다른 방법이 있을 것 같아서 열심히 구글링 해봤는데 거의 `MultiPartFile`을 파라미터로 하지, Map을 파라미터로 하는 경우는 잘 없었다.
+다시 기존 소스를 살펴보면 실제 호출시에 파라미터에는 `LinkedMultiValueMap`이 들어간다. DTO를 `LinkedMultiValueMap`으로 변환하고 파라미터에 넣으면 `feign`에서 알아서 `multipart/form-data`에 맞게 HTTP Body를 생성해줬다. 근데 그게 2.2.2부터는 안 되는 상황. `feign` 로그 레벨을 Full로 해봤다. 2.2.1까지는 제대로 Body가 생성된 게 로그에 찍히는데 새 버전에서는 Binary Data라고 퉁친다. FallbackFactory 생성해서 파라미터 찍어보기는 좀 귀찮아서 이전에는 `@RequestPart` 어노테이션을 붙이면 `Map`의 키마다 HTTP 메시지를 생성해줬는데, 파라미터 하나당 메시지 한 개로 스펙이 바뀐건 아닌가 추론해봤다. 다른 방법이 있을 것 같아서 열심히 구글링 해봤는데 거의 `MultiPartFile`을 파라미터로 하지, `Map`을 파라미터로 하는 경우는 잘 없었다.
 
 
-
-#### GFeignClient
 
 ```java
 @FeignClient
@@ -78,11 +76,7 @@ public interface GFeignClient extends MultiPartFeignClient {
   @RequestMapping(method = RequestMethod.POST, value = "/order", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   String order(RequestDto request);
 }
-```
 
-#### RequestDto
-
-```java
 public class GRequestDto extends RequestDto {
 	@FormProperty("field_one")
 	private String fieldOne;
@@ -92,13 +86,13 @@ public class GRequestDto extends RequestDto {
 }
 ```
 
-스프링 공식 문서랑 스택오버플로우를 열심히 뒤져보다가 방법을 찾았다. 따로 어노테이션은 필요없고, consumes를 `multipart/form-data`로 하고 오브젝트를 그대로 집어넣으면 된다. 그리고 오브젝트 필드에 `@FormProperty`로 name을 세팅해주면 된다. 테스트 돌려보니 성공. 버전 업그레이드 완료~
+스프링 공식 문서랑 스택오버플로우를 열심히 뒤져보다가 방법을 찾았다. 따로 어노테이션은 필요없고, `consumes`를 `multipart/form-data`로 하고 오브젝트를 그대로 집어넣으면 된다. 그리고 오브젝트 필드에 `@FormProperty`로 name을 세팅해주면 된다. 테스트 돌려보니 성공. 버전 업그레이드 완료~
 
 
 
-## 전0
+## 전
 
-일 수도 있겠지만 돌아만 간다고 끝내기엔 아쉬웠다.
+일 수도 있겠지만 돌아만 간다고 끝내기엔 아쉬웠다. 여기엔 나름의 이유가 있었다.
 
 
 
@@ -111,7 +105,7 @@ public interface MultiPartFeignClient {
 }
 ```
 
-일단 `GFeignClient`를 보면 `MultiPartFeignClient` 인터페이스를 상속하고 있다. 원래 위처럼 생겼었다. 새롭게 찾은 방법을 적용하고 나서는 아래와 같이 바뀌었다.
+일단 `GFeignClient`를 보면 `MultiPartFeignClient` 인터페이스를 상속하고 있다. `MultiPartFeignClient`는 원래 위 코드처럼 생겼었다. 새롭게 찾은 방법을 적용하고 나서는 아래와 같이 바뀌었다.
 
 
 
@@ -120,21 +114,22 @@ public interface MultiPartFeignClient {
     String order(RequestDto request);
     String cancel(RequestDto request);
     String resend(RequestDto request);
-    String status(Map request);
+    String status(Map request); // 지금은 GFeignClient만 상속해서 문제없지만 나중에 다른 업체가 추가될 때 문제 발생 소지가 높다.
 }
 ```
 
-4개 메소드 중에 3개만 Dto를 파라미터로 받는다. 왜일까? 업체 스펙이 `POST` 요청할 때만 `multipart/form-data`로 하라고 했기 때문이다. `status()`는 `GET`에다가 쿼리 파라미터로 요청한다. 이전에 전부 `Map`이 었던 건 `@RequestPart` 어노테이션을 붙이면 `multipart/form-data`로 해주고, `@SpringQueryMap` 어노테이션을 붙이면 쿼리 파라미터를 만들어줬다. 근데 DTO에다가 `@SpringQueryMap`을 붙이면 쿼리 파라미터를 만들어주긴 하는데, 네이밍이 자바 기본 컨벤션인 카멜 케이스로 해준다. 나는 스네이크 케이스로 해야하는데, 아무리 찾아도 방법이 안 나올 뿐더러 '방법이 없다'는 답변까지 확인했다. 일단 당장 `MultiPartFeignClient`를 상속하는 건 G 업체 밖에 없기 때문에 문제는 안 되지만, 그렇다고 이대로 둘 순 없다. 뭘로든 통일해야 확장성을 지킬 수 있다. 
+4개 메소드 중에 3개만 DTO를 파라미터로 받는다. 왜일까? 업체 스펙이 `POST` 요청할 때만 `multipart/form-data`로 하라고 했기 때문이다. `status()`는 `GET`에다가 쿼리 파라미터로 요청한다. 이전에 전부 `Map`이 었던 건 `@RequestPart` 어노테이션을 붙이면 `multipart/form-data`로 해주고, `@SpringQueryMap` 어노테이션을 붙이면 쿼리 파라미터를 만들어줬다. 근데 DTO에다가 `@SpringQueryMap`을 붙이면 쿼리 파라미터를 만들어주긴 하는데, 네이밍이 자바 기본 컨벤션인 카멜 케이스로 해준다. 나는 스네이크 케이스로 해야하는데 아무리 찾아도 방법이 안 나올 뿐더러 '방법이 없다'는 답변까지 확인했다. 일단 당장 `MultiPartFeignClient`를 상속하는 건 `G` 업체 밖에 없기 때문에 문제는 안 되지만, 그렇다고 이대로 둘 순 없다. 뭘로든 통일해야 확장성을 지킬 수 있을 걸로 보였다.
 
 
 
-근데 왜 굳이 인터페이스를 또 상속했을까? 내가 담당하는 업체는 15개 업체다. 우리 쪽 DB 동일한데, 같은 데이터를 각각 15개 업체가 요구하는 포맷으로 세팅하고 응답도 각각 파싱해서 다시 같은 데이터로 맞춘다. `FeignClient`도 A 업체부터 O 업체까지 `AFeignClient`부터 `OFeignClient`까지 있다. 처음에는 메인 서비스 로직에서 각 업체별 `FeignClient`를 호출했는데, 고도화를 하면서 핸들러 어댑터 패턴을 적용하게 됐다. 구조는 다음과 같다. 
+근데 왜 굳이 인터페이스를 또 상속했을까? 내가 담당하는 업체는 15개 업체다. 우리 쪽 DB 동일한데, 같은 데이터를 각각 15개 업체가 요구하는 포맷으로 세팅하고 응답도 각각 파싱해서 다시 같은 데이터로 맞춘다. `FeignClient`도 `A` 업체부터 `O` 업체까지 `AFeignClient`부터 `OFeignClient`까지 있다. 처음에는 메인 서비스 로직에서 각 업체별 `FeignClient`를 호출했는데, 고도화를 하면서 핸들러 어댑터 패턴을 적용하게 됐다. 구조는 다음과 같다. 
 
 
 
 #### FeignService
 
 ```java
+// FeignClient 호출을 대행하는 서비스. 메인 로직 처리 중에 업체 통신시 업체별 FeignClient를 직접 호출하지 않고, 이 친구를 호출한다.
 @Service
 public class FeignService {
 
@@ -147,17 +142,21 @@ public class FeignService {
 
     @PostConstruct
     private void initFactory() {
+      	// FeignClient Map을 초기화한다.
         map.put(A, applicationContext.getBean(AFeignClient.class));
      		map.put(B, applicationContext.getBean(BFeignClient.class));
       	...
         map.put(O, applicationContext.getBean(OFeignClient.class));
-
+				
+      	// HanderAdpater 리스트를 초기화한다.
         adapters = new ArrayList<>(applicationContext.getBeansOfType(FeignHandlerAdapter.class).values());
     }
 
     public String order(RequestDto request) {
+      	// 요청 데이터의 업체 유형으로 FeignClient를 가져온다.
         Object handler = map.get(request.getType());
 
+      	// HandlerAdapter 리스트에서 지원하는 Adapter를 찾는다.
         for (FeignHandlerAdapter adapter : adapters) {
             if (adapter.supports(handler)) {
                 return adapter.order(handler, request);
@@ -167,13 +166,8 @@ public class FeignService {
         throw new Exception("오류");
     }
 }
-```
 
-
-
-#### HandlerAdapter 구현체
-
-```java
+// JSON HandlerAdapter 구현체
 @Component
 public class JsonFeiginHandlerAdpater implements FeignHandlerAdapter {
 
@@ -184,10 +178,11 @@ public class JsonFeiginHandlerAdpater implements FeignHandlerAdapter {
 
     @Override
     public String order(Object handler, RequestDto request) {
-        return ((JsonFeignClient) handler).order(request.toJsonString());
+        return ((JsonFeignClient) handler).order(request.toJsonString()); // DTO를 JSON String으로 변환하여 호출
     }
 }
 
+// Form HandlerAdapter 구현체
 @Component
 public class FormFeignHandlerAdapter implements FeignHandlerAdapter {
 
@@ -198,7 +193,7 @@ public class FormFeignHandlerAdapter implements FeignHandlerAdapter {
 
     @Override
     public String order(Object handler, RequestDto request) {
-        return ((FormFeignClient) handler).order(request.toQueryParams());
+        return ((FormFeignClient) handler).order(request.toQueryParams()); // DTO를 Form String으로 변환하여 호출
     }
 }
 ```
@@ -207,16 +202,123 @@ public class FormFeignHandlerAdapter implements FeignHandlerAdapter {
 
 
 
+#### MultiPartHandlerAdapter
+
+```java
+@Component
+public class MultiPartFeignHandlerAdapter implements FeignHandlerAdapter {
+
+    @Override
+    public boolean supports(Object handler) {
+        return (handler instanceof MultiPartFeignClient);
+    }
+
+    @Override
+    public String order(Object handler, RequestDto request) {
+        return ((MultiPartFeignClient) handler).order(request.toMultiPartForm()); // multipart/form-data String으로 변환하여 호출
+    }
+}
+```
+
+그래서 `FeignClient` 의 메소드가 받는 파라미터는 모두 String으로 통일하고, 각 `HandlerAdapter` 구현체에서 JSON String, Form String, MultiPart String 등으로 변환해서 호출하려는 방식으로 수정하려고 했다. 그러면 포맷만 다를 뿐 String으로 바꾸는 건 같으니깐 나중에 불필요한 클래스를 줄이는 등 리팩토링할 여지가 생길 수 있을 거라 생각했다. 그래서 `toMultiPartForm()`을 구현했다.
 
 
-## 전
 
-근데 솔직히 이거 좀 오버엔지니어링 같다. 핸들러 어댑터 패턴을 쓰기에 적합한 것 같긴 한데, 꼭 안 써도 될 상황이긴 했다. 왜냐면 Json이든 Form이든 파라미터는 다 String으로 받아서 HTTP Body에 그대로 넣는다. 근데 MultiPart는 DTO를 그대로 받는다. 그럼 feign에서 알아서 MultiPart로 바꿔서 HTTP 메시지에 박아준다. 이 상태에선 핸들러 어댑터 괜찮긴 하다. 근데 MultiPartFeignClient도 각 메소드에서 String을 받도록 해두면 불필요한 클래스들을 좀 줄일 수 있을 것 같았다.
-
-
-
-어쨋든 이거도 저거도 다 String으로 받는데, MultiPart도 String으로 받으면 안 되나 생각했다. 일단 `MultiPartFeignClient` 인터페이스에서 다 String으로 선언해두면, `GFeignClient`에서 업체 요구사항대로 `POST`는 `multipart/form-data`로, `GET`은 쿼리 파라미터로 요청할 수 있도록 어노테이션을 써서 유연하게 구현할 수 있었다. 나중에 쿼리 파라미터를 n개 받는 API가 있는 업체가 추가되면 얘기가 다르지만, 일단은 이 정도 확장성까지만 확보해도 충분할 것으로 결론지었다. 그 정도로 유니크한 업체라면 그냥 업체 전용 인터페이스를 만들거나 해야지.
+또 다른 문제가 생겼다. `boundary`였다. 일단 String 직접 만들어서 잘 통신되나 보려고 고정값으로 뒀었다., 이전에 `feign`에서 알아서 변환해줄 때는 매 요청마다 `boundary` 값이 랜덤으로 생성됐다. 랜덤 생성하는 건 괜찮은데, 또 `FeignClient`에 전달해줘야 되고 `toMultiPartForm()`에서 반환하는 자료형은 어떻게 해야하며 이래저래 모양이 좋지 않았다. 그렇다고 고정값으로 박아버리는 게 문제가 없을지 장담할 수 없었다.
 
 
 
-근데 의외로 자바 오브젝트를 `multipart/form-data` 포맷 문자열로 바꿔주는 레퍼런스를 찾기가 어려웠다. 직접 구현하는 수 밖에 없었다.
+#### GFeignClient
+
+```java
+@FeignClient
+public interface GFeignClient extends MultiPartFeignClient {
+  @RequestMapping(method = RequestMethod.POST, value = "/order", produces = "MediaType.APPLICATION_JSON_VALUE", consumes = "multipart/form-data;charset=utf-8;boundary=abcderfghijklmnop")
+  String order(Map request);
+}
+```
+
+그러다가 얻어걸렸다. `FeignClient `에서 만들어주는 `boundary`는 어떤 모양인가 보려고 위와 같이 `RequestDto` 자료형만 `Map`으로 수정하고 테스트를 돌려봤는데 성공했다. 갑자기?
+
+
+
+일단 성공했다. 내가 `Map`으로 받을 때 파라미터에 어노테이션 안 붙이고는 안 돌려봤었나? 돌려봤었던 거 같은데 착각인가? 일단 다시 돌려도 되는 걸 확인하고, 여기서 다시 만들어가려고 고정 `boundary`를 박아뒀던 `consumes`의 값을 다시 `MediaType.MULTIPART_FORM_DATA_VALUE`로 수정했다. 예시 코드에서야 메소드 하나지만, 실제로는 3개가 더 있으니깐 리터럴 보다는 static 변수 불러오는 게 나으니깐. 다시 테스트 코드 돌렸는데 실패. 뭐지? 다시 `"multipart/form-data;charset=utf-8;boundary=abcderfghijklmnop"` 리터럴로 바꾸니깐 성공. `bodundary` 빼고 `"multipart/form-data;charset=utf-8"`로 바꿔도 성공.
+
+
+
+이제 HTTP 통신 로그를 볼 때다. `MediaType.MULTIPART_FORM_DATA_VALUE`에서 가져올 때랑 리터럴로 넣을 때랑 비교해봤다.
+
+
+
+```
+# MediaType.MULTIPART_FORM_DATA_VALUE를 쓸 때
+Content-Length: 17
+Content-Type: multipart/form-data; charset=UTF-8; boundary=18143a1dc3e
+
+# 리터럴로 넣을 때
+Content-Length: 1323
+Content-Type: multipart/form-data;charset=UTF-8;boundary=-XQCWfCCMRpsMfgS8-4ebYASCvQvso
+```
+
+일단 `Content-Type`에서는 특이사항이 없다. 혹시 띄어쓰기 허용이 안 되나 싶긴 했는데 스펙상 OWS다. `Content-Length`가 현저히 차이난다. Body도 위에는 그냥 Binary Data로 퉁치는 반면, 아래는 내용을 정확히 보여준다. 결국 Body에 뭔가 다른 게 들어가있구나 추론할 수 있었다.  `Content-Type`의  `charset`의 이슈였다. `application/json`의 기본 인코딩이 `UTF-8`이라서 다른 것도 그러지 않을까 싶었다. HTTP 1.1의 기본 인코딩은 `ISO-8859-1`이라는 것 같다. 근데 결국 `Content-Type`에는 `charset=UTF-8` 이게 들어가는데? `HttpMessageConverter`를 까봐야 되나? 일단 이슈 해결부터 마무리 짓기로 했다.
+
+
+
+## 결
+
+#### MultiPartFeignClient
+
+```java
+public interface MultiPartFeignClient {
+    String order(Map request);
+    String cancel(Map request);
+    String resend(Map request);
+    String status(Map request);
+}
+
+
+@FeignClient
+public interface GFeignClient extends MultiPartFeignClient {
+    @RequestMapping(method = RequestMethod.POST, value = "/order", produces = MediaType.APPLICATION_JSON_VALUE, consumes = "multipart/form-data;charset=utf-8")
+    String order(Map request);
+
+    @RequestMapping(method = RequestMethod.GET, value = "/status?{request}", produces = MediaType.APPLICATION_JSON_VALUE)
+    String status(@SpringQueryMap Map request);
+}
+
+@Component
+public class MultiPartFeignHandlerAdapter implements FeignHandlerAdapter {
+
+    @Override
+    public boolean supports(Object handler) {
+        return (handler instanceof MultiPartFeignClient);
+    }
+
+    @Override
+    public String order(Object handler, RequestDto request) {
+        return ((MultiPartFeignClient) handler).order(request.toMultiValueMap());
+    }
+}
+```
+
+그리하여 `MultiPartFeignClient`는 다시 위와 같은 형태를 띄게 되었다. 비록 `G` 업체는 `GET` 요청시에는 쿼리 파라미터로 데이터를 전달해줘야 하지만, `@SpringQueryMap` 어노테이션 덕분에 유연하게 대응할 수 있었다. `consumes` 파라미터에 값을 리터럴로 넣어줘야 한다는 안 예쁨이 남아있지만 별로 중요하진 않다. 다음에 `multipart/form-data`를 주로 사용하는 업체가 추가되어도 어느 정도 이 틀 안에서 유연하게 처리되리라 기대해본다.
+
+
+
+```
+@FeignClient
+public interface GFeignClient extends MultiPartFeignClient {
+    @RequestMapping(method = RequestMethod.POST, value = "/order", produces = MediaType.APPLICATION_JSON_VALUE, consumes = "multipart/form-data;charset=utf-8")
+    String order(@RequestPart(value="request") Map request);
+}
+```
+
+아 혹시 그럼 `@RequestPart`에 `value` 값은 아무거나 넣고, `consumes`에 charset만 넣어주면 됐던 거 아냐? 싶어서 위처럼 수정하고도 돌려봤다.
+
+
+
+```
+Could not write request: no suitable HttpMessageConverter found for request type [java.util.LinkedHashMap] and content type [multipart/form-data;charset=UTF-8]
+```
+
+위와 같은 메시지가 뜬다. 적절한 `HttpMessageConverter`를 찾을 수 없단다. 역시 저 친구를 까봐야겠다. 까보는 건 또 다른 포스팅 주제가 되어야 할 것 같다. 저 많은 구현체 중에 어떤 걸 선택했는지 모르겠다. 사실 어떤 구현체를 쓰는지, 그 구현체의 기본 인코딩이 뭔지만 확인하고 완결지어도 될 것 같긴 하다. 이건 좀 더 확인해보고 업데이트 해야겠다.
