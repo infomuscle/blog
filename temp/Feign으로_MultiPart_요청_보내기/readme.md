@@ -321,4 +321,4 @@ public interface GFeignClient extends MultiPartFeignClient {
 Could not write request: no suitable HttpMessageConverter found for request type [java.util.LinkedHashMap] and content type [multipart/form-data;charset=UTF-8]
 ```
 
-위와 같은 메시지가 뜬다. 적절한 `HttpMessageConverter`를 찾을 수 없단다. 역시 저 친구를 까봐야겠다. 까보는 건 또 다른 포스팅 주제가 되어야 할 것 같다. 저 많은 구현체 중에 어떤 걸 선택했는지 모르겠다. 사실 어떤 구현체를 쓰는지, 그 구현체의 기본 인코딩이 뭔지만 확인하고 완결지어도 될 것 같긴 하다. 이건 좀 더 확인해보고 업데이트 해야겠다.
+위와 같은 메시지가 뜬다. 적절한 `HttpMessageConverter`를 찾을 수 없단다. 역시 저 친구를 까봐야겠다. 까보는 건 또 다른 포스팅 주제가 되어야 할 것 같다. 저 많은 구현체 중에 어떤 걸 선택했는지 모르겠다. 사실 어떤 구현체를 쓰는지, 그 구현체의 기본 인코딩이 뭔지만 확인하고 완결지어도 될 것 같긴 하다. `FormHttpMessageConverter`가 아닐까 싶은데, 여기는 그냥 DEFAUT CHARSET이라고 선언만 되어있다. 컨버터에서 쓰는 기본 인코딩이라는데 그게 뭔지 어디서 찾을까. 이건 좀 더 확인해보고 업데이트 해야겠다.
