@@ -260,7 +260,48 @@ Content-Length: 1323
 Content-Type: multipart/form-data;charset=UTF-8;boundary=-XQCWfCCMRpsMfgS8-4ebYASCvQvso
 ```
 
-일단 `Content-Type`에서는 특이사항이 없다. 혹시 띄어쓰기 허용이 안 되나 싶긴 했는데 스펙상 OWS다. `Content-Length`가 현저히 차이난다. Body도 위에는 그냥 Binary Data로 퉁치는 반면, 아래는 내용을 정확히 보여준다. 결국 Body에 뭔가 다른 게 들어가있구나 추론할 수 있었다.  `Content-Type`의  `charset`의 이슈였다. `application/json`의 기본 인코딩이 `UTF-8`이라서 다른 것도 그러지 않을까 싶었다. HTTP 1.1의 기본 인코딩은 `ISO-8859-1`이라는 것 같다. 근데 결국 `Content-Type`에는 `charset=UTF-8` 이게 들어가는데? `HttpMessageConverter`를 까봐야 되나? 일단 이슈 해결부터 마무리 짓기로 했다.
+일단 `Content-Type`에서는 특이사항이 없다. 혹시 띄어쓰기 허용이 안 되나 싶긴 했는데 스펙상 OWS다. `Content-Length`가 현저히 차이난다. Body도 위에는 그냥 Binary Data로 퉁치는 반면, 아래는 내용을 정확히 보여준다. 결국 Body에 뭔가 다른 게 들어가있구나 추론할 수 있었다.  `Content-Type`의  `charset`의 이슈였다. `application/json`의 기본 인코딩이 `UTF-8`이라서 다른 것도 그러지 않을까 싶었다. HTTP 1.1의 기본 인코딩은 `ISO-8859-1`이라는 것 같다. 근데 결국 `Content-Type`에는 `charset=UTF-8` 이게 들어가는데? `HttpMessageConverter`를 까봐야 되나? 로그 레벨을 낮춰보니 `charset`을 추가할 경우는 `SpringEncoder`에서  `AllEncompassingFormHttpMessageConverter`을 쓸 거라고 알려주는데, 안 넣을 경우는 딱히 로그가 찍히는 게 없다. 
+
+
+
+```java
+public class SpringEncoder implements Encoder {
+    public void encode(Object requestBody, Type bodyType, RequestTemplate request) throws EncodeException {
+        if (requestBody != null) {
+            Collection<String> contentTypes = (Collection)request.headers().get("Content-Type");
+            MediaType requestContentType = null;
+            if (contentTypes != null && !contentTypes.isEmpty()) {
+                String type = (String)contentTypes.iterator().next();
+                requestContentType = MediaType.valueOf(type);
+            }
+
+            // "multipart/form-data"가 들어갈 경우 MediaType.valueOf()에서 걸리고, 이 조건문을 탄다.
+            if (this.isFormRelatedContentType(requestContentType)) {
+                this.springFormEncoder.encode(requestBody, bodyType, request);
+                return;
+            }
+
+            if (bodyType == MultipartFile.class) {
+                log.warn("For MultipartFile to be handled correctly, the 'consumes' parameter of @RequestMapping should be specified as MediaType.MULTIPART_FORM_DATA_VALUE");
+            }
+						// "multipart/form-data;charset=utf-8"인 경우 HttpMessageConverter를 통해 인코딩된다.
+            this.encodeWithMessageConverter(requestBody, bodyType, request, requestContentType);
+        }
+    private boolean isFormRelatedContentType(MediaType requestContentType) {
+        return this.isMultipartType(requestContentType) || this.isFormUrlEncoded(requestContentType);
+    }
+
+    private boolean isMultipartType(MediaType requestContentType) {
+        return Arrays.asList(MediaType.MULTIPART_FORM_DATA, MediaType.MULTIPART_MIXED, MediaType.MULTIPART_RELATED).contains(requestContentType);
+    }
+
+    private boolean isFormUrlEncoded(MediaType requestContentType) {
+        return Objects.equals(MediaType.APPLICATION_FORM_URLENCODED, requestContentType);
+    }
+}
+```
+
+디버깅을 해보니 `SpringEncoder`에서 경로를 다르게 탄다.`MediaType`의 특정 유형 여부를 `valueOf()`를 통해 확인하고, `SpringFormEncoder`를 탈 지 `MesssageConver`를 탈 지 갈린다. 여기서 차이가 발생했나보다. 근데 `SpringFormEncoder`를 따라가봐도 `charset`은 UTF-8로 되어있긴 한데, 무슨 차이일까. 추정컨데 String 변환이 아니라 자바 객체를 통째로 인코딩하는 것 같다. 더 따라가보단 끝이 없을 것 같아서 이 정도 선에서 마무리 해야겠다. 추후에 좀 더 확인해보고 업데이트 해야겠다.
 
 
 
@@ -305,20 +346,3 @@ public class MultiPartFeignHandlerAdapter implements FeignHandlerAdapter {
 
 
 
-```
-@FeignClient
-public interface GFeignClient extends MultiPartFeignClient {
-    @RequestMapping(method = RequestMethod.POST, value = "/order", produces = MediaType.APPLICATION_JSON_VALUE, consumes = "multipart/form-data;charset=utf-8")
-    String order(@RequestPart(value="request") Map request);
-}
-```
-
-아 혹시 그럼 `@RequestPart`에 `value` 값은 아무거나 넣고, `consumes`에 charset만 넣어주면 됐던 거 아냐? 싶어서 위처럼 수정하고도 돌려봤다.
-
-
-
-```
-Could not write request: no suitable HttpMessageConverter found for request type [java.util.LinkedHashMap] and content type [multipart/form-data;charset=UTF-8]
-```
-
-위와 같은 메시지가 뜬다. 적절한 `HttpMessageConverter`를 찾을 수 없단다. 역시 저 친구를 까봐야겠다. 까보는 건 또 다른 포스팅 주제가 되어야 할 것 같다. 저 많은 구현체 중에 어떤 걸 선택했는지 모르겠다. 사실 어떤 구현체를 쓰는지, 그 구현체의 기본 인코딩이 뭔지만 확인하고 완결지어도 될 것 같긴 하다. `FormHttpMessageConverter`가 아닐까 싶은데, 여기는 그냥 DEFAUT CHARSET이라고 선언만 되어있다. 컨버터에서 쓰는 기본 인코딩이라는데 그게 뭔지 어디서 찾을까. 이건 좀 더 확인해보고 업데이트 해야겠다.
