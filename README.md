@@ -79,6 +79,7 @@
 - Mockito
 - MSA 트랜잭션
 - Pinpoint
+- 디버깅
 
 
 ## 내가 보기 위한 CS 초간단 요약
