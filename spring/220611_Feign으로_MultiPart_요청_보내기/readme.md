@@ -39,6 +39,7 @@ public interface GFeignClient extends MultiPartFeignClient {
   String order(@RequestPart(value="request") Map request);
 }
 ```
+
 그래도 비어서 안 된다니깐 임의로 값을 넣어보았다. 스프링은 잘 떴다!
 
 
@@ -265,6 +266,7 @@ Content-Type: multipart/form-data;charset=UTF-8;boundary=-XQCWfCCMRpsMfgS8-4ebYA
 
 
 ![image1](./image1.png)
+<!--[##_Image|kage@zLrme/btrEwycnizM/g17yfCkMktwrKvvSr8sII0/img.png|alignCenter|width="100%"|_##]-->
 
 그럼 디버깅을 해보자. 위 사진과 같은 호출 구조를 가지고 있었다.
 
@@ -377,6 +379,7 @@ public class MultipartFormContentProcessor implements ContentProcessor {
 
 
 ![image1](./image2.png)
+<!--[##_Image|kage@bb9l0q/btrEuyrzgnA/A3Uw8dohhniGcOXPplh1kK/img.png|alignCenter|width="100%"|_##]-->
 
 byte[17]의 data를 String으로 변환해보니 `boundary`가 나왔다. 즉 사실상 빈 메시지가 전달되는 것이었다. 이유는? `LinkedMultiValueMap` -> `HashMap` 변환이 안 돼서.
 

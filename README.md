@@ -22,6 +22,7 @@
     - [스프링부트 어노테이션 정리](./spring/210315_스프링부트_어노테이션_정리)
     - [IntelliJ IDEA에서 Spring Boot 프로젝트 생성](./spring/210504_IntelliJ_IDEA에서_Spring_Boot_프로젝트_생성)
     - [@Transactional 어노테이션의 롤백 테스트](./spring/210512_@Transactional_어노테이션의_롤백_테스트) 
+    - [Feign으로 Multipart 요청 보내기](./spring/220611_Feign으로_Multipart_요청_보내기)
 - [파이썬](./python)
     - [파이썬 문자열 함수 정리](./python/210316_파이썬_문자열_함수_정리)
     - [파이썬 버전 및 가상환경 관리 - pyenv](./python/201127_파이썬_버전_및_가상환경_관리_pyenv)
