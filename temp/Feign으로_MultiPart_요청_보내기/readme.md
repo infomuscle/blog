@@ -46,7 +46,7 @@ public interface GFeignClient extends MultiPartFeignClient {
 
 ## 승
 
-근데 테스트 코드 돌려보니깐 실패했다. `400` 응답을 주고 있었다. `value`를 빼면 또 스프링이 안 떴다. 근본 문제가 뭔지 확인이 필요했다. 디펜던시 확인으로 돌아갔다. 외부 라이브러리 목록에서 feign 관련 의존성을 확인해봤다.  `io.github.openfeign` 관련 패키지들을 보니 이전에는 10.2.3 버전이었고, 업데이트 후에는 10.12였다. 이렇게도 저렇게도 해보고 최신 버전인 11.8까지 올려봤다. 안 됐다.
+근데 테스트 코드 돌려보니깐 실패했다. `400` 응답을 주고 있었다. `value`를 빼면 또 스프링이 안 떴다. 근본 문제가 뭔지 확인이 필요했다. 디펜던시 확인으로 돌아갔다. 외부 라이브러리 목록에서 `feign` 관련 의존성을 확인해봤다.  `io.github.openfeign` 관련 패키지들을 보니 이전에는 10.2.3 버전이었고, 업데이트 후에는 10.12였다. 이렇게도 저렇게도 해보고 최신 버전인 11.8까지 올려봤다. 안 됐다.
 
 
 
@@ -66,7 +66,7 @@ public interface GFeignClient extends MultiPartFeignClient {
 }
 ```
 
-다시 기존 소스를 살펴보면 실제 호출시에 파라미터에는 `LinkedMultiValueMap`이 들어간다. DTO를 `LinkedMultiValueMap`으로 변환하고 파라미터에 넣으면 `feign`에서 알아서 `multipart/form-data`에 맞게 HTTP Body를 생성해줬다. 근데 그게 2.2.2부터는 안 되는 상황. `feign` 로그 레벨을 Full로 해봤다. 2.2.1까지는 제대로 Body가 생성된 게 로그에 찍히는데 새 버전에서는 Binary Data라고 퉁친다. FallbackFactory 생성해서 파라미터 찍어보기는 좀 귀찮아서 이전에는 `@RequestPart` 어노테이션을 붙이면 `Map`의 키마다 HTTP 메시지를 생성해줬는데, 파라미터 하나당 메시지 한 개로 스펙이 바뀐건 아닌가 추론해봤다. 다른 방법이 있을 것 같아서 열심히 구글링 해봤는데 거의 `MultiPartFile`을 파라미터로 하지, `Map`을 파라미터로 하는 경우는 잘 없었다.
+다시 기존 소스를 살펴보면 실제 호출시에 파라미터에는 `LinkedMultiValueMap`이 들어간다. DTO를 `LinkedMultiValueMap`으로 변환하고 파라미터에 넣으면 `feign`에서 알아서 `multipart/form-data`에 맞게 HTTP Body를 생성해줬다. 근데 그게 2.2.2부터는 안 되는 상황. `feign` 로그 레벨을 Full로 해봤다. 2.2.1까지는 제대로 Body가 생성된 게 로그에 찍히는데 새 버전에서는 Binary Data라고 퉁친다. `FallbackFactory` 생성해서 파라미터 찍어보기는 좀 귀찮아서 이전에는 `@RequestPart` 어노테이션을 붙이면 `Map`의 키마다 HTTP 메시지를 생성해줬는데, 파라미터 하나당 메시지 한 개로 스펙이 바뀐건 아닌가 추론해봤다. 다른 방법이 있을 것 같아서 열심히 구글링 해봤는데 거의 `MultiPartFile`을 파라미터로 하지, `Map`을 파라미터로 하는 경우는 잘 없었다.
 
 
 
@@ -122,7 +122,7 @@ public interface MultiPartFeignClient {
 
 
 
-근데 왜 굳이 인터페이스를 또 상속했을까? 내가 담당하는 업체는 15개 업체다. 우리 쪽 DB 동일한데, 같은 데이터를 각각 15개 업체가 요구하는 포맷으로 세팅하고 응답도 각각 파싱해서 다시 같은 데이터로 맞춘다. `FeignClient`도 `A` 업체부터 `O` 업체까지 `AFeignClient`부터 `OFeignClient`까지 있다. 처음에는 메인 서비스 로직에서 각 업체별 `FeignClient`를 호출했는데, 고도화를 하면서 핸들러 어댑터 패턴을 적용하게 됐다. 구조는 다음과 같다. 
+근데 왜 굳이 인터페이스를 또 상속했을까? 내가 담당하는 업체는 15개 업체다. 우리 쪽 DB는 동일한데, 같은 데이터를 각각 15개 업체가 요구하는 포맷으로 세팅하고 응답도 각각 파싱해서 다시 같은 데이터로 맞춘다. `FeignClient`도 `A` 업체부터 `O` 업체까지 `AFeignClient`부터 `OFeignClient`까지 있다. 처음에는 메인 서비스 로직에서 각 업체별 `FeignClient`를 호출했는데, 고도화를 하면서 핸들러 어댑터 패턴을 적용하게 됐다. 구조는 다음과 같다. 
 
 
 
@@ -290,7 +290,8 @@ public class SpringEncoder implements Encoder {
             if (bodyType == MultipartFile.class) {
                 log.warn("For MultipartFile to be handled correctly, the 'consumes' parameter of @RequestMapping should be specified as MediaType.MULTIPART_FORM_DATA_VALUE");
             }
-						// "multipart/form-data;charset=utf-8"인 경우 HttpMessageConverter를 통해 인코딩된다.
+          
+            // "multipart/form-data;charset=utf-8"인 경우 HttpMessageConverter를 통해 인코딩된다.
             this.encodeWithMessageConverter(requestBody, bodyType, request, requestContentType);
         }
     private boolean isFormRelatedContentType(MediaType requestContentType) {
@@ -450,7 +451,7 @@ public class MultiPartFeignHandlerAdapter implements FeignHandlerAdapter {
                     }
                 }
               
-								// setAccessibleAction 후에 바로 result 리턴
+                // setAccessibleAction 후에 바로 result 리턴
                 return result;
             }
 ```
