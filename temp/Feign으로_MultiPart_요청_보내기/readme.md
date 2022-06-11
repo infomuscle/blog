@@ -264,6 +264,12 @@ Content-Type: multipart/form-data;charset=UTF-8;boundary=-XQCWfCCMRpsMfgS8-4ebYA
 
 
 
+![image1](./image1.png)
+
+그럼 디버깅을 해보자. 위 사진과 같은 호출 구조를 가지고 있었다.
+
+
+
 ```java
 public class SpringEncoder implements Encoder {
     public void encode(Object requestBody, Type bodyType, RequestTemplate request) throws EncodeException {
@@ -301,7 +307,77 @@ public class SpringEncoder implements Encoder {
 }
 ```
 
-디버깅을 해보니 `SpringEncoder`에서 경로를 다르게 탄다.`MediaType`의 특정 유형 여부를 `valueOf()`를 통해 확인하고, `SpringFormEncoder`를 탈 지 `MesssageConver`를 탈 지 갈린다. 여기서 차이가 발생했나보다. 근데 `SpringFormEncoder`를 따라가봐도 `charset`은 UTF-8로 되어있긴 한데, 무슨 차이일까. 추정컨데 String 변환이 아니라 자바 객체를 통째로 인코딩하는 것 같다. 더 따라가보단 끝이 없을 것 같아서 이 정도 선에서 마무리 해야겠다. 추후에 좀 더 확인해보고 업데이트 해야겠다.
+`SpringEncoder`를 살펴보니 `multipart/form-data`와 `multipart/form-data;charset=UTF-8`은 경로를 다르게 탄다.`MediaType`의 특정 유형 여부를 `valueOf()`를 통해 확인하고, `SpringFormEncoder`를 탈 지 `MesssageConver`를 탈 지 갈린다. 여기서 차이가 발생했나보다. 근데 `SpringFormEncoder`를 따라가봐도 `charset`은 UTF-8로 되어있긴 한데, 무슨 차이일까.
+
+
+
+```java
+public class FormEncoder implements Encoder {
+    public void encode(Object object, Type bodyType, RequestTemplate template) throws EncodeException {
+        String contentTypeValue = this.getContentTypeValue(template.headers());
+        ContentType contentType = ContentType.of(contentTypeValue);
+        if (!this.processors.containsKey(contentType)) {
+            this.delegate.encode(object, bodyType, template);
+        } else {
+            Map data;
+            if (MAP_STRING_WILDCARD.equals(bodyType)) {
+                data = (Map)object;
+            } else {
+                if (!PojoUtil.isUserPojo(bodyType)) {
+                    this.delegate.encode(object, bodyType, template);
+                    return;
+                }
+                // object는 LinkedMultiValueMap인데 toMap()은 HashMap을 사용한다.
+                data = PojoUtil.toMap(object); // data.size() == 0
+            }
+
+            Charset charset = this.getCharset(contentTypeValue);
+            // 여기서 RequestTemplate을 처리한다. charset=UTF-8, data=HashMap(size=0)
+            ((ContentProcessor)this.processors.get(contentType)).process(template, charset, data);
+        }
+    }
+}
+```
+
+`charset` 문제는 아니었다. `feign`에서 `RequestTemplate`을 생성하는 과정에서 `LinkedMultiValueMap` -> `HashMap` 변환이 안 돼서였다. `FormEncoder`의 내부 로직을 따라가보면 `PojoUtil.toMap()`로 데이터를 `Map`으로 변환한 뒤, `MultipartFormContentProcessor.process()`에서 `RequestTemplate`에 Header, Body 등을 세팅한다. 근데 `PojoUtil.toMap()`에서 `HashMap`을 쓴다. 결국 처음 전달한 `LinkedMultiValueMap`의 크기는 8인데, 결과로 받는` HashMap`의 크기는 0이다. 요청 데이터가 다 날아갔다.
+
+
+
+```java
+public class MultipartFormContentProcessor implements ContentProcessor {
+    // 이 메소드가 호출되기 전에 PojoUtil.toMap()을 거치면서 data에는 빈 HashMap 객체가 들어온다.
+    public void process(RequestTemplate template, Charset charset, Map<String, Object> data) throws EncodeException {
+        String boundary = Long.toHexString(System.currentTimeMillis());
+        Output output = new Output(charset);
+        Iterator var6 = data.entrySet().iterator();
+				
+        // data의 size가 0이니 패스
+        while(var6.hasNext()) {
+            Entry<String, Object> entry = (Entry)var6.next();
+            if (entry != null && entry.getKey() != null && entry.getValue() != null) {
+                Writer writer = this.findApplicableWriter(entry.getValue());
+                writer.write(output, boundary, (String)entry.getKey(), entry.getValue());
+            }
+        }
+      
+        // 여기만 들어간다.
+        output.write("--").write(boundary).write("--").write("\r\n"); 
+        String contentTypeHeaderValue = this.getSupportedContentType().getHeader() + "; charset=" + charset.name() + "; boundary=" + boundary;
+        template.header("Content-Type", Collections.emptyList());
+        template.header("Content-Type", new String[]{contentTypeHeaderValue});
+        byte[] bytes = output.toByteArray();
+        Body body = Body.encoded(bytes, (Charset)null); // charset이 null
+        template.body(body);
+}
+```
+
+`MultipartFormContentProcessor.process()`는 data로 결국 빈 HashMap을 받는다. 요청 데이터는 못 넣고, `boundary`의 끝 부분만 넣게된다. 이걸 바이트 배열로 변환해서 body에 넣게 되는 것이다. 그래서 로그에서는 `Content-Length`가 17, Body는 Binary data라고 찍혔던 것이다.
+
+
+
+![image1](./image2.png)
+
+byte[17]의 data를 String으로 변환해보니 `boundary`가 나왔다. 즉 사실상 빈 메시지가 전달되는 것이었다. 이유는? `LinkedMultiValueMap` -> `HashMap` 변환이 안 돼서.
 
 
 
@@ -342,7 +418,41 @@ public class MultiPartFeignHandlerAdapter implements FeignHandlerAdapter {
 }
 ```
 
-그리하여 `MultiPartFeignClient`는 다시 위와 같은 형태를 띄게 되었다. 비록 `G` 업체는 `GET` 요청시에는 쿼리 파라미터로 데이터를 전달해줘야 하지만, `@SpringQueryMap` 어노테이션 덕분에 유연하게 대응할 수 있었다. `consumes` 파라미터에 값을 리터럴로 넣어줘야 한다는 안 예쁨이 남아있지만 별로 중요하진 않다. 다음에 `multipart/form-data`를 주로 사용하는 업체가 추가되어도 어느 정도 이 틀 안에서 유연하게 처리되리라 기대해본다.
+결론적으로 `MultiPartFeignClient`는 다시 위와 같은 형태를 띄게 되었다. 비록 `G` 업체는 `GET` 요청시에는 쿼리 파라미터로 데이터를 전달해줘야 하지만, `@SpringQueryMap` 어노테이션 덕분에 유연하게 대응할 수 있었다. `consumes` 파라미터에 값을 리터럴로 넣어줘야 한다는 안 예쁨이 남아있지만 별로 중요하진 않다. 다음에 `multipart/form-data`를 주로 사용하는 업체가 추가되어도 어느 정도 이 틀 안에서 유연하게 처리되리라 기대해본다.
 
 
 
+```java
+    public static Map<String, Object> toMap(@NonNull Object object) {
+        try {
+            if (object == null) {
+                throw new NullPointerException("object is marked @NonNull but is null");
+            } else {
+                HashMap<String, Object> result = new HashMap();
+                Class<?> type = object.getClass();
+                PojoUtil.SetAccessibleAction setAccessibleAction = new PojoUtil.SetAccessibleAction();
+              
+                // 디버깅을 하면 여기서부터 건너뛴다.
+                Field[] var4 = type.getDeclaredFields();
+                int var5 = var4.length;
+
+                for(int var6 = 0; var6 < var5; ++var6) {
+                    Field field = var4[var6];
+                    int modifiers = field.getModifiers();
+                    if (!Modifier.isFinal(modifiers) && !Modifier.isStatic(modifiers)) {
+                        setAccessibleAction.setField(field);
+                        AccessController.doPrivileged(setAccessibleAction);
+                        Object fieldValue = field.get(object);
+                        if (fieldValue != null) {
+                            String propertyKey = field.isAnnotationPresent(FormProperty.class) ? ((FormProperty)field.getAnnotation(FormProperty.class)).value() : field.getName();
+                            result.put(propertyKey, fieldValue);
+                        }
+                    }
+                }
+              
+								// setAccessibleAction 후에 바로 result 리턴
+                return result;
+            }
+```
+
+그럼 DTO -> `Map`을 변환할 때 `LinkedMultiValueMap` 말고 `HashMap` 쓰면 잘 되는 거 아냐? 라고 생각해서 해봤다. 그럼에도 잘 안 된다. `object`는 `HashMap`으로 받지만, `var4` 세팅하는 부분이 안 된다. 왜일까? 모르겠다.. `type`은 null이 아니고. `getDeclaredField()`에서 가져올 수 있는 게 없으면 `var4`에 빈 배열이라도 있어야 하는 거 아닌가? 디버깅 모드에선 아예 안 보인다. 이건 나중에 따로 알아봐야겠다. `MediaType.MULTIPART_FORM_DATA_VALUE`를 쓸 때 동작 안 하던 문제는 결국 `PojoUtil.toMap()`이었던 걸로 결론지으며 마무리 해야겠다.
