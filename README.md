@@ -42,10 +42,11 @@
 
 
 ## 작성 예정
+- **컨트롤러, AOP, ExceptionHandler**
+- AOP
 - JPA, Hibernate, Spring Data JPA
 - OSI 7 Layer
-- AOP
-- Ioc, DI
+- IoC, DI
 - REST API
 - 통합 테스트와 단위 테스트
 - Oracle 자료형 정리
