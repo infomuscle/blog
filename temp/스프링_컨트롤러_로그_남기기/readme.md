@@ -87,7 +87,7 @@ public class Controller {
 1. **인터페이스 저장은 메소드의 주요 관심사가 아니다.**
   컨트롤러의 목적은 요청을 받아서 검증하고, 서비스 로직을 수행하는 것이다. 특히 DB와 관련해선 주문번호를 검증해서 신규 주문 데이터를 생성하거나 기존 주문 데이터를 가져오는 것이 주요 역할이다. 인터페이스 관련 처리는, 물론 할 수도 있지만, 가능하면 한 가지 DB 작업에 집중했으면 했다. 그러자면 주문 관련 작업이 주 기능이고 인터페이스 관련 작업은 부가 기능임이 명백했다.
 
-2. **코드의 중복**
+2. **코드의 중복**.
   예제 코드에선 `order()` 메소드만 있지만, 같은 구조로 `cancel()`, `resend()`, `status()` 라는 메소드가 더 있다. 그리고 앞으로 `exchange()`, `extend()` 같은 메소드까지 추가될 수 있다. 사실 컨트롤러에서는 구조가 거의 같다. 인터페이스를 저장하고, 주문번호로 유효성을 검증해서 주문을 생성하거나 기존 주문을 가져오고, 서비스 로직을 호출한다. 위처럼 코드를 짤 경우 변경 사항이 생길 때마다 모든 메소드를 똑같이 작업해줘야 한다. 예를 들어 예외 발생시 `Sentry`로 추적하기로 했다고 해보자. 4개, 어쩌면 6개의 메소드의 `catch` 안에 `Sentry.captureException(e)` 코드를 추가해줘야 한다.
 
 
@@ -371,7 +371,7 @@ public class CustomOncePerRequestFilter extends OncePerRequestFilter {
 public class Interceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        // request body 메시지 가져오는 건 Interface 엔티티로 캡슐화. 필터에서 캐스팅 해줘서 InputStream을 여러 번 읽을 수 있다.
+        // 요청의 바디 메시지 가져오는 건 Interface 엔티티로 캡슐화. 필터에서 캐스팅 해줘서 InputStream을 여러 번 읽을 수 있다.
         Interface interface = repository.save(Interface.of(request));
         request.setAttribute("interface", interface);
 
@@ -389,7 +389,7 @@ public class Interceptor implements HandlerInterceptor {
 
 @Controller
 public class Controller {
-  	// 예외 핸들링은 @ExceptioinHandler로. 응답은 인터셉터의 afterCompletion()에서 업데이트 해준다.
+    // 예외 핸들링은 @ExceptioinHandler로. 응답은 인터셉터의 afterCompletion()에서 업데이트 해준다.
     @ExceptionHandler
     public ApiWrapper handleException(Exception e) {
         log.error(e.getMessage(), e);
@@ -438,4 +438,4 @@ public class ControllerV2 {
 
 
 
-아직 `ContentCachingRequestWrapper`가 왜  `afterCompletion()`에서는 `getContentAsByteArray()`에서 값을 제대로 주고, `preHandle()`에서는 아닌지 원인은 찾지 못했다. 예약 주문 프로젝트가 끝나고 한 번 디버깅에 시간 투자 좀 해봐야겠다.
+아직 `ContentCachingRequestWrapper`가 왜  `afterCompletion()`에서는 `getContentAsByteArray()`에서 값을 제대로 주고, `preHandle()`에서는 아닌지 원인은 찾지 못했다. 포스팅을 작성하다보니 필터에서 추가 작업을 해줘야 할지도 모르겠단 생각도 들었다. 예약 주문 프로젝트가 끝나고 한 번 디버깅에 시간 투자 좀 해봐야겠다.
