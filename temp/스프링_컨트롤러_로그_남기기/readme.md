@@ -16,7 +16,6 @@
 ```java
 @Controller
 public class Controller {
-
     public ApiWrapper order(String orderNo, OrderRequest orderRequest, HttpServletRequest httpRequest) {
         try {
             //요청 정보 기반으로 Interface 엔티티 생성하여 저장
@@ -54,7 +53,6 @@ public class Controller {
 ```java
 @Controller
 public class Controller {
-
     public ApiWrapper order(String orderNo, OrderRequest orderRequest, HttpServletRequest httpRequest) {
         Interface interface = null;
         Result result = null;
@@ -124,13 +122,16 @@ public class Aspect {
         // 주문 로직에 필요한 인터페이스 ID를 컨트롤러에 전달
         httpRequest.setAttribute("interfaceId", interface.getInterfaceId());
 
-        // 실제 컨트롤러 메소드 수행
+        // 컨트롤러 메소드 수행과 예외 핸들링
       	Object proceed = null;
         try {
+            // 컨트롤러 메소드 수행
             proceed = pjp.proceed();
         } catch (Exception e) {
+            // 예외 발생시 예외 기반 응답 생성
             proceed = new Result(e);
         } finally {
+            // 정상/예외 수행 결과 업데이트
             interface.updateResult((Result) proceed);
             repository.save(interface);
         }
@@ -155,35 +156,19 @@ public class Aspect {
 
 ```java
 @Controller
-public class Controller {
-
-    private final ControllerV2 controllerV2;
-
-    @ExceptionHandler
-    public ApiWrapper handleException(Exception e) {
-        log.error(e.getMessage(), e);
-        return new ApiWrapper<>(Result(e));
-    }
-
+public class ControllerV1 {
     public ApiWrapper cancel(String orderNo, CancelRequest cancelRequest, HttpServletRequest httpRequest) {
         return controllerV2.cancel(orderNo, cancelRequest, httpRequest);
     }
 }
 
 public class ControllerV2 {
-
-    @ExceptionHandler
-    public Result handleException(Exception e) {
-        log.error(e.getMessage(), e);
-        return Result(e);
-    }
-
     public ApiWrapper cancel(String orderNo, CancelRequest cancelRequest, HttpServletRequest httpRequest) {
-        // 주문번호로 유효성 검증 후 주문 데이터 생성
+        // 주문번호로 유효성 검증 후 주문 데이터 업데이트 및 조회
         Order order = saveIfClaimValid(orderNo, cancelRequest);
         order.init((String) httpRequest.getAttribute("interfaceId"));
 
-        // 주문상품별 연동 로직 수행
+        // 연동 로직 수행
         return service.cancel(order);
     }
 }
@@ -204,10 +189,8 @@ public class ControllerV2 {
 @Aspect
 @Component
 public class Aspect {
-
     @Around(value = "execution(orderPointCut()) && args(orderNo, orderRequest, httpRequest)")
     public Object aroundOrder(ProceedingJoinPoint pjp, String orderNo, OrderRequest orderRequest, HttpServletRequest httpRequest) throws Throwable {
-      
         // URL로 v2를 판단하고, 아니면 바로 로직 수행
       	if (!httpRequest.getRequestURI().contains("v2")) {
             return pjp.proceed();
@@ -218,12 +201,16 @@ public class Aspect {
         // 주문 로직에 필요한 인터페이스 ID를 컨트롤러에 전달
         httpRequest.setAttribute("interfaceId", interface.getInterfaceId());
       
+        // 컨트롤러 메소드 수행과 예외 핸들링
       	Object proceed = null;
         try {
+            // 컨트롤러 메소드 수행
             proceed = pjp.proceed();
         } catch (Exception e) {
+            // 예외 발생시 예외 기반 응답 생성
             proceed = new Result(e);
         } finally {
+            // 정상/예외 수행 결과 업데이트
             interface.updateResult((Result) proceed);
             repository.save(interface);
         }
@@ -255,10 +242,13 @@ public class Interceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-
+        // InputStream 문제를 해결하기 위해 ContentCachingRequestWrapper로 캐스팅
         ContentCachingRequestWrapper wrappingRequest = new ContentCachingRequestWrapper(request);
+      
+        // 배열이 비어있다. afterCompletion()에선 똑같이 처리해도 데이터가 있다.
         byte[] contentByteArray = wrappingRequest.getContentAsByteArray();
 
+        // 인터페이스 저장을 해야하나, 어차피 데이터가 없어 소용이 없다.
         Interface interface = repository.save(Interface.of(request));
         request.setAttribute("interface", interface);
 
@@ -267,13 +257,16 @@ public class Interceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-
+      	// 여기선 별 문제가 없다.
         ContentCachingResponseWrapper wrappingResponse = new ContentCachingResponseWrapper(response);
         byte[] contentByteArray = wrappingResponse.getContentAsByteArray()
-        JsonNode response = objectMapper.readTree(contentByteArray).get("data");
-
+          
+        // 응답 바디 메시지를 String으로 변환
+        String response = objectMapper.readTree(contentByteArray).get("data").toString();
+      
+        // 업데이트도 정상 수행 가능
         Interface interface = (Interface) request.getAttribute("interface");
-        interface.updateResult(response.toString());
+        interface.updateResult(response);
         repository.save(interface);
     }
 }
@@ -364,8 +357,11 @@ public class ReadableRequestBodyWrapper extends HttpServletRequestWrapper {
 public class CustomOncePerRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        // 요청은 ReadableRequestBodyWrapper로, 응답은 ContentCachingResponseWrapper로.
         ReadableRequestBodyWrapper wrappingRequest = new ReadableRequestBodyWrapper(request);
         ContentCachingResponseWrapper wrappingResponse = new ContentCachingResponseWrapper(response);
+      
+      	// 캐스팅한 객체로 Filter 수행.
         filterChain.doFilter(wrappingRequest, wrappingResponse);
         wrappingResponse.copyBodyToResponse();
     }
@@ -375,6 +371,7 @@ public class CustomOncePerRequestFilter extends OncePerRequestFilter {
 public class Interceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        // request body 메시지 가져오는 건 Interface 엔티티로 캡슐화. 필터에서 캐스팅 해줘서 InputStream을 여러 번 읽을 수 있다.
         Interface interface = repository.save(Interface.of(request));
         request.setAttribute("interface", interface);
 
@@ -383,14 +380,49 @@ public class Interceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        // 인터페이스 업데이트. 메소드 기능이 명확하고, 코드도 깔끔해졌다.
         Interface interface = (Interface) request.getAttribute("interface");
 		  	interface.updateResponse(response);
         ecpnRepository.save(interface);
     }
 }
+
+@Controller
+public class Controller {
+  	// 예외 핸들링은 @ExceptioinHandler로. 응답은 인터셉터의 afterCompletion()에서 업데이트 해준다.
+    @ExceptionHandler
+    public ApiWrapper handleException(Exception e) {
+        log.error(e.getMessage(), e);
+        return new ApiWrapper<>(new Result(e));
+    }
+
+    public ApiWrapper cancel(String orderNo, CancelRequest cancelRequest, HttpServletRequest httpRequest) {
+        return controllerV2.cancel(orderNo, cancelRequest, httpRequest);
+    }
+}
+
+public class ControllerV2 {
+    // 예외 핸들링은 @ExceptioinHandler로.
+    @ExceptionHandler
+    public Result handleException(Exception e) {
+        log.error(e.getMessage(), e);
+        return new Result(e);
+    }
+
+    public ApiWrapper cancel(String orderNo, CancelRequest cancelRequest, HttpServletRequest httpRequest) {
+        // 주문번호로 유효성 검증 후 주문 데이터 업데이트 및 조회
+        Order order = saveIfClaimValid(orderNo, cancelRequest);
+        order.init((String) httpRequest.getAttribute("interfaceId"));
+
+        // 연동 로직 수행
+        return service.cancel(order);
+    }
+}
 ```
 
 근데 지금 생각해보니 꼭 필터가 필요한가 싶다. 일단 `HttpServlertResponse`는 어차피 `afterCompletion()`에서 데이터 잘 가져와서, 엔티티에서 바로 변환해서 써도 될 테고.. `HttpServlertRequest`가, 변환된 걸 `doFilter()`에 넣어줘야 할 것 같긴 하다. 엔티티에서 변환하면 그대로 `InputStream` 사용되고 끝날 것 같다.
+
+그리고 `@ExceptionHandler`를 사용해줬다. 이로써 컨트롤러에서 던지는 예외도 간편하게 처리할 수 있다. 예외를 잡아서, 예외 기반 응답을 리턴한다. 인터셉터의 `afterCompletion()`은 어차피 이 이후에 호출되기 때문에, 예외가 발생해도 인터페이스 응답 결과는 정상적으로 업데이트 된다.
 
 
 
