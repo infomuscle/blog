@@ -85,10 +85,10 @@ public class Controller {
 이렇게 할 경우 예외가 발생해도 `catch`에서 `Result`를 생성한다. 그리고 `finally`에서 `Result`를 인터페이스에 업데이트 할 수 있다. 크게 나쁘다고 할 수는 없을 것 같다. 하지만 좋은 구조는 아니라고 생각했다. 이유는 다음과 같다.
 
 1. **인터페이스 저장은 메소드의 주요 관심사가 아니다.**
-  컨트롤러의 목적은 요청을 받아서 검증하고, 서비스 로직을 수행하는 것이다. 특히 DB와 관련해선 주문번호를 검증해서 신규 주문 데이터를 생성하거나 기존 주문 데이터를 가져오는 것이 주요 역할이다. 인터페이스 관련 처리는, 물론 할 수도 있지만, 가능하면 한 가지 DB 작업에 집중했으면 했다. 그러자면 주문 관련 작업이 주 기능이고 인터페이스 관련 작업은 부가 기능임이 명백했다.
+    컨트롤러의 목적은 요청을 받아서 검증하고, 서비스 로직을 수행하는 것이다. 특히 DB와 관련해선 주문번호를 검증해서 신규 주문 데이터를 생성하거나 기존 주문 데이터를 가져오는 것이 주요 역할이다. 인터페이스 관련 처리는, 물론 할 수도 있지만, 가능하면 한 가지 DB 작업에 집중했으면 했다. 그러자면 주문 관련 작업이 주 기능이고 인터페이스 관련 작업은 부가 기능임이 명백했다.
 
 2. **코드의 중복**.
-  예제 코드에선 `order()` 메소드만 있지만, 같은 구조로 `cancel()`, `resend()`, `status()` 라는 메소드가 더 있다. 그리고 앞으로 `exchange()`, `extend()` 같은 메소드까지 추가될 수 있다. 사실 컨트롤러에서는 구조가 거의 같다. 인터페이스를 저장하고, 주문번호로 유효성을 검증해서 주문을 생성하거나 기존 주문을 가져오고, 서비스 로직을 호출한다. 위처럼 코드를 짤 경우 변경 사항이 생길 때마다 모든 메소드를 똑같이 작업해줘야 한다. 예를 들어 예외 발생시 `Sentry`로 추적하기로 했다고 해보자. 4개, 어쩌면 6개의 메소드의 `catch` 안에 `Sentry.captureException(e)` 코드를 추가해줘야 한다.
+    예제 코드에선 `order()` 메소드만 있지만, 같은 구조로 `cancel()`, `resend()`, `status()` 라는 메소드가 더 있다. 그리고 앞으로 `exchange()`, `extend()` 같은 메소드까지 추가될 수 있다. 사실 컨트롤러에서는 구조가 거의 같다. 인터페이스를 저장하고, 주문번호로 유효성을 검증해서 주문을 생성하거나 기존 주문을 가져오고, 서비스 로직을 호출한다. 위처럼 코드를 짤 경우 변경 사항이 생길 때마다 모든 메소드를 똑같이 작업해줘야 한다. 예를 들어 예외 발생시 `Sentry`로 추적하기로 했다고 해보자. 4개, 어쩌면 6개의 메소드의 `catch` 안에 `Sentry.captureException(e)` 코드를 추가해줘야 한다.
 
 
 
@@ -123,7 +123,7 @@ public class Aspect {
         httpRequest.setAttribute("interfaceId", interface.getInterfaceId());
 
         // 컨트롤러 메소드 수행과 예외 핸들링
-      	Object proceed = null;
+        Object proceed = null;
         try {
             // 컨트롤러 메소드 수행
             proceed = pjp.proceed();
@@ -157,13 +157,15 @@ public class Aspect {
 ```java
 @Controller
 public class ControllerV1 {
-    public ApiWrapper cancel(String orderNo, CancelRequest cancelRequest, HttpServletRequest httpRequest) {
-        return controllerV2.cancel(orderNo, cancelRequest, httpRequest);
+    public ApiWrapper<Result> cancel(String orderNo, CancelRequest cancelRequest, HttpServletRequest httpRequest) {
+        Result result = controllerV2.cancel(orderNo, cancelRequest, httpRequest);
+        return new ApiWrapper<>(result);
     }
 }
 
+@Controller
 public class ControllerV2 {
-    public ApiWrapper cancel(String orderNo, CancelRequest cancelRequest, HttpServletRequest httpRequest) {
+    public Result cancel(String orderNo, CancelRequest cancelRequest, HttpServletRequest httpRequest) {
         // 주문번호로 유효성 검증 후 주문 데이터 업데이트 및 조회
         Order order = saveIfClaimValid(orderNo, cancelRequest);
         order.init((String) httpRequest.getAttribute("interfaceId"));
