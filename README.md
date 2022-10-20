@@ -23,6 +23,7 @@
     - [IntelliJ IDEA에서 Spring Boot 프로젝트 생성](./spring/210504_IntelliJ_IDEA에서_Spring_Boot_프로젝트_생성)
     - [@Transactional 어노테이션의 롤백 테스트](./spring/210512_@Transactional_어노테이션의_롤백_테스트)
     - [Feign으로 Multipart 요청 보내기](./spring/220611_Feign으로_MultiPart_요청_보내기)
+    - [스프링 컨트롤러 인터페이스 저장 방식 개선](./spring/221007_스프링_컨트롤러_인터페이스_저장_방식_개선)
 - [파이썬](./python)
     - [파이썬 문자열 함수 정리](./python/210316_파이썬_문자열_함수_정리)
     - [파이썬 버전 및 가상환경 관리 - pyenv](./python/201127_파이썬_버전_및_가상환경_관리_pyenv)
@@ -42,8 +43,7 @@
 
 
 ## 작성 예정
-- **컨트롤러, AOP, ExceptionHandler**
-- AOP
+- 컨트롤러, AOP, ExceptionHandler
 - JPA, Hibernate, Spring Data JPA
 - OSI 7 Layer
 - IoC, DI
@@ -58,7 +58,6 @@
 - 로드밸런서
 - GC 튜닝
 - MyBatis @Alias
-- 깃북
 - 동시성 이슈와 ConcurrentHashMap
 - Jenkins, Docker, 빌드 및 배포 자동화
 - Java Static
@@ -69,22 +68,20 @@
 - 컴팩션
 - 세션/쿠키
 - JWT 토큰 로그인 구현
+- 스프링 시큐리티
 - Servlet
 - 디자인 패턴
-  - 팩토리 메서드
-  - 스태틱 팩토리 메서드
-  - 어댑터
-  - 싱글톤
-  - 빌더
-- MSA 단점
+  - 팩토리 메서드/스태틱 팩토리 메서드/어댑터/싱글톤/빌더
 - Sentry
 - Mockito
-- MSA 트랜잭션
-- Pinpoint
+- MSA
+  - 트랜잭션/단점/Pinpoint
+
 - 디버깅
 - feign compression
 - 아마존
-- 스프링 시큐리티
+
+
 
 
 ## 내가 보기 위한 CS 초간단 요약
