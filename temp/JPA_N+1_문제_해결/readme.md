@@ -66,7 +66,7 @@ N+1은 1:N, 혹은 N:1 관계의 데이터를 조회할 때 발생한다.
 
 그림으로 표현하면 다음과 같은 구조다(컬럼은 일부 생략했다).
 
-![image3](/Users/bokeun/Desktop/Projects/blog/temp/JPA_N+1_문제_해결/image3.png)
+![image3](./image3.png)
 
 
 
@@ -74,7 +74,7 @@ N+1은 1:N, 혹은 N:1 관계의 데이터를 조회할 때 발생한다.
 
 반면에 엔티티간의 관계, 즉 객체 관계는 다음 그림과 같다.
 
-![image4](/Users/bokeun/Desktop/Projects/blog/temp/JPA_N+1_문제_해결/image4.png)
+![image4](./image4.png)
 
 
 
@@ -106,9 +106,9 @@ N+1은 1:N, 혹은 N:1 관계의 데이터를 조회할 때 발생한다.
 
 테이블과 객체 관계는 아래와 같다.
 
-![image5](/Users/bokeun/Desktop/Projects/blog/temp/JPA_N+1_문제_해결/image5.png)
+![image5](./image5.png)
 
-![image6](/Users/bokeun/Desktop/Projects/blog/temp/JPA_N+1_문제_해결/image6.png)
+![image6](./image6.png)
 
 그럼 2번 쿼리는 `SKILL` 테이블에서 데이터를 불러오는 쿼리고,
 
