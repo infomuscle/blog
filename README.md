@@ -16,6 +16,7 @@
     - [MyBatis #과 $의 차이](./java/210914_MyBatis_%23과_%24의_차이)
     - [객체지향과 SOLID](./java/211011_객체_지향과_SOLID)
     - [JPA 영속성 컨텍스트](./java/211016_JPA_영속성_컨텍스트)
+    - [JPA N+1 문제 해결](./java/221023_JPA_N+1_문제_해결)
 - [네트워크](./network)
     - [URI vs URL vs URN](./network/211012_URI_vs_URL_vs_URN)
 - [스프링](./spring)
