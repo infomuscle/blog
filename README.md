@@ -44,6 +44,7 @@
 
 
 ## 작성 예정
+- Adapter 패턴 with Feign
 - 컨트롤러, AOP, ExceptionHandler
 - JPA, Hibernate, Spring Data JPA
 - OSI 7 Layer
