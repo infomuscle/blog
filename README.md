@@ -82,6 +82,10 @@
 - 디버깅
 - feign compression
 - 아마존
+- 빈 스코프
+- 자바 메모리 구조
+- String Constant Pool
+- Hashmap 키 충돌
 
 
 
