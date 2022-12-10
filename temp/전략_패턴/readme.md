@@ -92,7 +92,7 @@ public class Thief extends Player {
   }
 
   public void attack() {
-    System.out.println("더블 스텝!");
+    System.out.println("더블 스탭!");
   }
 
 }
@@ -169,9 +169,9 @@ public abstract class Thief extends Player {
 
 ### 상속의 문제점 2: 동작을 동적으로 바꿀 순 없다
 
-아이디어가 넘치는 기획자는 전사와 도적의 퓨전 직업을 생각해냈다. 이 직업은 플레이어의 조작에 따라 파이터의 움직임과 어쌔신의 움직임을 왔다갔다 할 수 있다. 어떻게 해야될까? flag에 따라 전사와 도적의 움직임을 하도록 분기 처리해야 할까?
+아이디어가 넘치는 기획자는 전사와 도적의 퓨전 직업을 생각해냈다. 이 직업은 플레이어의 조작에 따라 파이터의 움직임과 어쌔신의 움직임을 왔다갔다 할 수 있다. 어떻게 해야될까? flag에 따라 파이터와 어쌔신의 움직임을 하도록 분기 처리해야 할까? 이 경우 flag에 따른 각 움직임의 코드는 파이터, 어쌔신의 코드와 동일해야 한다. 그러면서도 전체 `move()`코드는 같지 않다. 중복되면서도 단순히 붙여넣기도 어려운 구조다.
 
-또 만약에 같은 전사 직업군에서도 움직임을 다르게 해달라는 요구사항이 들어오면 어떻게 해야할까? 쿵쾅쿵쾅 전사와 뚜벅뚜벅 전사 같은 특성을 나눠서 추상 클래스를 정의해야 할까? 그 다음에 기존에 만들어진 모든 구체 클래스들이 쿵쾅쿵쾅이나 뚜벅뚜벅을 상속하도록 수정해야 할까? .
+또 만약에 같은 전사 직업군에서도 움직임을 다르게 해달라는 요구사항이 들어오면 어떻게 해야할까? 쿵쾅쿵쾅 전사와 뚜벅뚜벅 전사 같은 특성을 나눠서 추상 클래스를 정의해야 할까? 그 다음에 기존에 만들어진 모든 구체 클래스들이 쿵쾅쿵쾅이나 뚜벅뚜벅을 상속하도록 수정해야 할까?
 
 이제 전략 패턴이 등장할 때다.
 
@@ -179,16 +179,20 @@ public abstract class Thief extends Player {
 
 ## 전략 패턴: 행동의 캡슐화
 
+### 추상 클래스와 전략의 인터페이스 정의
+
 ```java
 public abstract class Player {
 
     MoveBehavior moveBehavior;
     AttackBehavior attackBehavior;
 
+  	// 구체적인 행동은 모른 채로 움직임을 수행한다.
     public void move() {
     		moveBehavior.performMove();
     }
 
+    // 구체적인 행동은 모른 채로 공격을 수행한다.
     public void attack() {
     		attackBehavior.performAttack();
     }
@@ -198,84 +202,156 @@ public abstract class Player {
     }
 }
 
+// 움직이는 행동을 캡슐화 하는 인터페이스
 public interface MoveBehavior {
   	void performMove();
 }
 
+// 공격하는 행동을 캡슐화 하는 인터페이스
 public interface AttackBehavior {
  		void performAttack();
 }
 ```
 
-아주 간단한 전략 패턴 구조다. 이제 각 `Behavior` 인터페이스의 구현체만 만들어주면 된다.
+아주 간단한 전략 패턴 구조다. `move()`에서 구현될 각 알고리즘을 `MoveBehavior`로 캡슐화 했다. `attack()`도 마찬가지다. 이제 각 `Behavior`의 구현체를 정의하고, `Player` 구체 클래스에서 세팅만 해주면 된다. 
 
+### 행동 인터페이스의 구현
 
+먼저 각 직업군의 움직임, 그리고 각 직업의 공격을 구현해보겠다.
 
 ```java
 
+// 전사 직업군의 움직임
 public class WarriorMoveBehavior implements MoveBehavior {
     public void performMove() {
       	System.out.println("쿵쾅쿵쾅 움직입니다.");
     }
 }
 
-
+// 마법사 직업군의 움직임
 public class MagicianMoveBehavior implements MoveBehavior {
     public void performMove() {
       	System.out.println("스르르륵 움직입니다.");
     }
 }
 
-
+// 도적 직업군의 움직임
 public class ThieifMoveBehavior implements MoveBehavior {
     public void performMove() {
       	System.out.println("슉슉슈슉 움직입니다.");
     }
 }
 
+// 파이터 직업의 공격
 public class FighterAttackBehavior implements AttackBehavior {
     public void performAttack() {
       	System.out.println("칼로 벱니다.");
     }
 }
 
-
+// 스피어맨 직업의 공격
 public class SpearmanAttackBehavior implements AttackBehavior {
     public void performAttack() {
       	System.out.println("창으로 찌릅니다.");
     }
 }
 
-
-public class AssasinAttackBehavior implements AttackBehavior {
+// 어쌔신 직업의 공격
+public class AssassinAttackBehavior implements AttackBehavior {
     public void performAttack() {
       	System.out.println("표창을 던집니다.");
     }
 }
 ```
 
+위의 코드가 바로 각 직업군, 또는 직업의 전략이 된다. 직업 클래스의 메소드에 들어갈 내용을 인터페이스와 그 구체 클래스로 캡슐화한 것이다. 그리고 각 직업은 자신의 상황에 맞춰서 알맞은 전략을 선택하면 된다.
 
+### 구체 클래스의 구현
+
+지금까지 만든 걸 기반으로 직업 클래스를 만들어보겠다.
 
 ```java
 public class Fighter extends Player {
     public Fighter() {
+        // 전사의 움직임 전략을 세팅한다.
         this.moveBehavior = new WarriorMoveBehavior();
+      
+        // 파이터의 공격 전략을 세팅한다.
         this.attackBehavior = new FighterAttackBehavior();
     }
 }
 
 
-public class ThiefWarrior extends Player {
-    public ThiefWarrior() {
+public class AssassinFighter extends Player {
+  
+    // 기본 세팅은 파이터로 한다.
+    public AssassinFighter() {
         this.moveBehavior = new WarriorMoveBehavior();
         this.attackBehavior = new FighterAttackBehavior();
     }
 
+    // 사용자 조작에 따라 어쌔신 모드로 전환한다.
     public void switchMode() {
-      	this.moveBehavior = (this.moveBehavior instanceof WarriorMoveBehavior)
-          ? new ThieifMoveBehavior()
-          : new WarriorMoveBehavior();
+        System.out.println("모드를 전환합니다.");
+        this.moveBehavior = (this.moveBehavior instanceof WarriorMoveBehavior)
+          ? new ThieifMoveBehavior() : new WarriorMoveBehavior();
+        this.attackBehavior = (this.attackBehavior instanceof FighterAttackBehavior)
+          ? new AssassinAttackBehavior() : new FighterAttackBehavior();
     }
 }
 ```
+
+보는 바와 같이 각 `Behavior`의 필드에 구현체를 넣어주면 끝이다. 여기선 단순하게 새 객체를 사용했지만 외부에서 주입받아도 된다. `AssassinFighter`에는 전략을 바꾸는 `switchMode()` 도 추가했다. 아니면 세터를 통해 다른 전략으로 바꿔도 좋다. 중요한 것은 객체의 행동을 보다 유연하게 정의할 수 있다는 것이다.
+
+### 직업 클래스 테스트
+
+```java
+public class StrategyTest {
+    @Test
+    void test2() {
+        System.out.println("Fighter를 생성합니다.");
+        Player player1 = new Fighter();
+        player1.move();
+        player1.attack();
+        player1.sit();
+
+        System.out.println();
+
+        System.out.println("AssassinFighter를 생성합니다.");
+        Player player2 = new AssassinFighter();
+        player2.move();
+        player2.attack();
+        ((AssassinFighter) player2).switchMode();
+        player2.move();
+        player2.attack();
+    }
+}
+```
+
+간단하게 파이터와 어쌔신파이터 인스턴스를 생성하고, 동작을 수행해보았다. 수행 결과는 아래와 같다. 
+
+ ![image1](/Users/infomuscle/Desktop/bokeun/blog/temp/전략_패턴/image1.png)
+
+다른 직업이지만 두 클래스는 같은 움직임과 공격을 하는 것을 알 수 있다. 하지만 각 움직임과 공격은 `WarriorMoveBehavior`와 `FighterMoveBehavior`에만 정의되어 있다. 나중에 수정할 일이 생기면 해당 클래스에서만 수정하면 된다. 어쌔신파이터의 경우 모드를 스위칭할 수 있는데, 이 때 어쌔신의 움직임과 공격을 똑같이 수행한다. 이 행동은 어쌔신에서도 똑같이 사용되지만, 그렇다고 같은 코드가 여러 곳에 붙여넣어져 있지는 않다. 게다가 동작을 전환하는 건 단순히 전략을 바꿔주는 것만으로 해결되어 이해하기에도 쉽다.
+
+
+
+## 정리
+
+전략 패턴의 장점과 주의사항은 아래와 같이 정리할 수 있을 것 같다.
+
+- 장점
+  - 코드의 중복을 줄일 수 있다.
+    - 여러 곳에서 동일한 동작을 할 때 하나의 전략 클래스에서만 알고리즘을 정의하면 된다. 상속에 비해서 관리도 용이하다.
+  - 확장에 유리하다.
+    - 메소드를 수정하는 게 아닌, 새로운 전략을 추가하는 방식으로 프로그램을 확장시킬 수 있다.
+  - 행동을 동적으로 변경할 수 있다.
+    - 한 인스턴스가 케이스에 따라 다른 행동을 해야할 때 전략을 바꾸는 방식으로 대응할 수 있다.
+- 주의사항
+  - 항상 유용한 것은 아니다.
+    - 모든 패턴이 다 마찬가지다. 구현해야 될 내용이 단순한 경우 분기처리하는 것이 더 이해도 쉽고 빠를 수 있다. 하지만 프로그램이 커질수록 유용해질 가능성이 높아보인다.
+  - 각 전략의 알고리즘을 이해하고 있어야 한다.
+    - 전략 패턴이 아니라도 당연한 내용이긴 하다. 어떤 전략을 어디에 어떻게 사용할지를 판단하는 건 결국 개발자의 몫이다. 전사에게 마법 공격 전략을 사용하지 않게 하려면 그만큼 방어 로직의 추가나 알고리즘의 이해 같은 높은 관심이 필요하다.
+
+
 
