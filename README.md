@@ -55,8 +55,6 @@
 - 통합 테스트와 단위 테스트
 - Oracle 자료형 정리
 - 자바 스트림
-- Vim 사용법
-- 스프링부트 배너 변경
 - xor 스왑
 - 자료형과 2의 보수
 - 로드밸런서
@@ -66,7 +64,7 @@
 - Jenkins, Docker, 빌드 및 배포 자동화
 - Java Static
 - 스프링 의존관계 주입 방법 + 롬복
-- request 스코프
+- 
 - 로드밸런서
 - 컴팩션
 - 스프링 시큐리티
@@ -83,18 +81,18 @@
 - feign compression
 - 아마존
 - 빈 스코프
+- request 스코프
 - 자바 메모리 구조
 - String Constant Pool
 - Hashmap 키 충돌
-- Call by Value? Call by Reference?
 - Java 컴파일 과정
 - Compiler vs Interpreter
-- String, StringBuilder, StringBuffer
 - String 불변객체인 이유
 - Thread Safe
 - JVM 구조
-- 오버로딩? 오버라이딩?
 - Checked vs Unchecked Exception
+- 스프링부트 배너 변경
+- Vim 사용법
 
 
 
@@ -214,6 +212,35 @@
 - 리터럴과 new의 차이
 - String Constant Pool
 - hashCode
+
+#### Call by Value vs Call by Reference
+
+- 값에 의한 호출과 참조에 의한 호출
+- 어떤 변수를 넘길 때 값을 복사하느냐, 직접 참조를 하느냐의 차이
+- 자바는 기본적으로 Call by Value
+- 그러나 클래스의 경우 변수에 주소를 들고 있기 때문에 Call by Reference처럼 보임
+
+#### String vs StringBuilder vs StringBuffer
+
+- String
+  - 불변 속성
+  - String 변수를 수정할 경우 기존 인스턴스는 그대로 남아있고, 새로 생성된 인스턴스를 가리킴
+  - 기존 인스턴스는 GC 대상이 되어, 문자열 수정이 빈번할 경우 메모리 이슈 발생 가능
+- StringBuilder vs StringBuffer
+  - 가변 속성
+  - 문자열이 바뀌어도 동일한 인스턴스를 가리키고 있기 때문에 수정이 많을 경우 이 둘 중 하나를 사용해야 함
+  - 차이점은 StringBuidler는 비동기이나 StringBuffer는 동기
+  - 멀티스레드 환경에서는 동기적인 StringBuffer를 사용해야 함
+  - 단일스레드 환경에서는 비동기적인 StringBuilder 성능이 좋음
+
+#### 오버로딩 vs 오버라이딩
+
+- 오버로딩
+  - 수평적
+  - 동일한 메소드명에서 파라미터 타입과 개수를 다르게 선언하는 경우
+- 오버라이딩
+  - 수직적
+  - 부모 클래스의 메소드를 재정의 하는 경우
 
 #### 정리 필요
 - 추상 클래스(abstract class)와 인터페이스(interface)..
@@ -542,31 +569,41 @@
 
 - 메모리를 이동하여 여유 공간을 만드는 작업. 작업 단위로 프로세스를 할당하면 작업이 끊기지 않고 잘 수행될 수 있지만, 메모리 공간이 부족할 때 Compaction을 하면 오버헤드 발생, 비용이 크기 때문에 잘 사용하지 않는다.
 
-#### 스케줄링
+#### CPU 스케줄링
 
 - 선점
   - Round Robin
-  - Shortest Remaint Time
-  - Multi Level Queue
+    - 각 프로세스에 동일한 시간 할당
+    - 할당 시간이 너무 크면 FCFS와 차이 없음
+    - 할당 시간이 너무 작으면 컨텍스트 스위칭 비용 증가
+  - SRT(Shortest Remain Time)
+  - Multi Level Queue(다단계 큐)
   - Multi Level Feedback Queue
 - 비선점
   - First Come First Service == FIFO
+    - 먼저 온 것 먼저 처리
+    - 대기 시간이 길어질 수 있음
   - Shortest Job First
+    - 실행 시간이 짧은 프로세스 먼저 수행
+    - 평균 대기 시간이 가장 짧음
+    - 실행 시간 긴 프로세스 차례가 오지 않는 기아 현상 발생
   - Highest Respons-ratio Next
 
 #### 페이지 교체 알고리즘
 
-- LRU(Least Recently Used)
-  - 가정: 가장 오랫동안 사용하지 않은 페이지라면 앞으로도 사용할 확률이 적을 것이다.
-- FIFO(First In First Outs)
-  - 메모리에 올라온 페이지 순서대로 내보냄
-- LFU(Least Frequently Used)
-- MFU(Most Frequently Used)
-- NUR(Not Used Recently)
 - OPT(Optimal)
   - 가장 오랫동안 사용되지 않을 페이지 교체
   - 프로세스가 앞으로 사용할 페이지를 미리 알아야 함
   - 이상적이나 실현 불가능
+  - 다른 알고리즘과의 성능 비교 목적
+- LRU(Least Recently Used)
+  - 가정: 가장 오랫동안 사용하지 않은 페이지라면 앞으로도 사용할 확률이 적을 것이다.
+- FIFO(First In First Outs)
+  - 메모리에 올라온 페이지 순서대로 내보냄
+  - 단점:
+- LFU(Least Frequently Used)
+- MFU(Most Frequently Used)
+- NUR(Not Used Recently)
 
 
 
