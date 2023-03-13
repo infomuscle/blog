@@ -125,8 +125,8 @@ D를 10 크기만큼 5개 페이지로 쪼개어 각각 10 크기의 빈 프레�
 
 앞서 편의를 위해 페이지를 10씩 나누고, 프로세스의 크기도 10의 배수였지만, 26 크기의 프로세스 E가 있다면 어떻게 될까요?
 
-![내부 단편화](./image6.png
-<!--[##_Image|kage@BTOra/btr3IC9eIFd/snvetxsyDL7RKl3BaUfcSk/img.png|alignCenter|width="100%"|_##]-->
+![내부 단편화](./image6.png)
+<!--[##_Image|kage@b5LTpq/btr3HRMm9vq/nSYqJwZtO06JdXDfSJpzLk/img.png|alignCenter|width="100%"|_##]-->
 
 이 경우 그림과 같이 총 3개의 페이지로 나눠지겠지만, 마지막 페이지는 4만큼의 공간이 활용하지 못하는 메모리로 남게 됩니다.
 
