@@ -18,6 +18,7 @@
     - [JPA 영속성 컨텍스트](./java/211016_JPA_영속성_컨텍스트)
     - [JPA N+1 문제 해결](./java/221023_JPA_N+1_문제_해결)
     - [전략 패턴](./java/221210_전략_패턴)
+    - [Call by Value와 Call by Reference](./java/230315_Call_by_Value와_Call_by_Reference)
 - [네트워크](./network)
     - [URI vs URL vs URN](./network/211012_URI_vs_URL_vs_URN)
 - [스프링](./spring)
@@ -236,12 +237,11 @@
 
 <br>
 
-#### Call by Value vs Call by Reference
+#### [Call by Value와 Call by Reference](./java/230315_Call_by_Value와_Call_by_Reference)
 
-- 값에 의한 호출과 참조에 의한 호출
-- 어떤 변수를 넘길 때 값을 복사하느냐, 직접 참조를 하느냐의 차이
-- 자바는 기본적으로 Call by Value
-- 그러나 클래스의 경우 변수에 주소를 들고 있기 때문에 Call by Reference처럼 보임
+- 자바는 Call by Value
+- 클래스는 Call by Reference처럼 보임
+- Wrapper 클래스는 불변이라 인스턴스를 수정하지 않고 변수에 저장된 주소 값을 바꿈
 
 <br>
 
