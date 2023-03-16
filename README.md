@@ -21,6 +21,7 @@
     - [Call by Value와 Call by Reference](./java/230315_Call_by_Value와_Call_by_Reference)
 - [네트워크](./network)
     - [URI vs URL vs URN](./network/211012_URI_vs_URL_vs_URN)
+    - [TCP의 연결 성립과 해제 - 3 Way Handshake & 4 Way Handshake](./network/230317_TCP의_연결_성립과_해제)
 - [스프링](./spring)
     - [스프링부트 어노테이션 정리](./spring/210315_스프링부트_어노테이션_정리)
     - [IntelliJ IDEA에서 Spring Boot 프로젝트 생성](./spring/210504_IntelliJ_IDEA에서_Spring_Boot_프로젝트_생성)
@@ -280,7 +281,7 @@
 - `Model`: 데이터를 처리하는 영역
 - `View`: 처리 결과를 바탕으로 응답을 표시하는 영역
 
-
+<br>
 
 #### @Transactional
 
@@ -308,13 +309,30 @@
 
   - 롤백하지 않는 예외를 지정
 
+<br>
 
+#### 의존성 주입 방식
+
+- **생성자 주입**
+  - 객체의 불변성 확보
+    - 런타임에서 의존성이 임의로 바뀌는 경우 방지
+  - 테스트 코드 작성 가능
+    - 스프링에 비의존적인 순수 자바 코드로 작성 가능
+  - final + lombok
+    - @RequiredArgsConstructor
+  - 스프링에 직접적인 의존 방지
+    - @Autowired는 스프링에서 제공하는데, 다른 프레임워크로 바꾼다면?
+  - 순환 참조 방지
+- 수정자 주입(Setter)
+- 필드 주입(@Autowired)
+
+<br>
 
 #### Dispatcher Servlet
 
 - sevlet container -> dispatcher servlet -> handler
 
-
+<br>
 
 ### JPA
 
@@ -332,6 +350,8 @@
   - 어쨌든 영속성 컨텍스트가 종료될 때까지 DB 커넥션을 계속 물고 있다.
   - 그냥 끄는 게 좋다
 
+<br>
+
 #### [JPA 영속성 컨텍스트](./java/211016_JPA_영속성_컨텍스트)
 
 - 엔티티 생명주기
@@ -343,6 +363,8 @@
   - 변경 감지(Dirty Checking)
   - 지연 로딩
 
+<br>
+
 ### 네트워크
 
 #### OSI 7 Layer
@@ -351,10 +373,19 @@
 - `Data Link Layer`: 내용 앞뒤로 구분자(?)를 추가하는 역할. Lan 카드인가 물리적으로 구현되어 있다.
 - `Network Layer`: 주소 추가.
 - `Transport Layer`: 포트 추가.
-- `Application Layer`: 현대에 5~7은 Application Layer로 통합.
-- 5와 6은 무엇을 할까? 
+- `Session Layer`
+- `Presentation Layer`
+- `Application Layer`
+
+<br>
 
 #### TCP/IP 4 Layer
+
+- Link Layer: OSI 7에서 Phsyical ~ Data Link에 해당
+- Internet Layer: OSI 7에서 Network에 해당
+- Transport Layer
+
+- Application Layer: OSI 7에서 Session ~ Presentation에 해당
 
 #### HTTP 프로토콜
 - `Hyper Text Transfer Protocol`
@@ -362,7 +393,10 @@
     - Header
     - Body
 
+<br>
+
 #### Restful API
+
 - 아키텍처
 - `Representational State Transfer`
 - HTTP URI(Uniform Resource Identifier)를 통해 자원(Resource)을 명시.
@@ -377,15 +411,24 @@
 - 단점
     - 표준이 없다.
 
+<br>
+
 ####  HTTP vs HTTPS
 
 - HTTP에 보안 계층을 추가하여 패킷 암호화.
 
+<br>
+
+#### [TCP의 연결 성립과 해제 - 3 Way Handshake & 4 Way Handshake](./network/230317_TCP의_연결_성립과_해제)
+
 #### TCP vs UDP
+
 - `TCP`: 상호작용. 파일 전송 등 신뢰성 중요.
   - 3 way handshake: 가상회선 수립. SYN(n) -> ACK(n+1) + SYN(m) -> ACK(m+1). 
   - 4 way handshake: 연결 해제.
 - `UDP`: 보내고 끝. 빠름. 스트리밍 등 효율성 중요.
+
+<br>
 
 #### 쿠키와 세션
 
@@ -398,6 +441,8 @@
   - 데이터를 서버에서 관리
   - 클라이언트는 세션ID를 쿠키에 저장하여, 요청시마다 전달
   - 보안면에서 쿠키보다 우수
+
+<br>
 
 #### [URI vs URL vs URN](./network/211012_URI_vs_URL_vs_URN)
 
@@ -413,6 +458,8 @@
     scheme://[userinfo@]host[:port][/path][?query][#fragment]
     ```
 
+<br>
+
 ### 데이터베이스
 
 #### [트랜잭션의 특성과 격리 수준](./database/211025_트랜잭션의_특성과_격리_수준)
@@ -427,11 +474,12 @@
 - 데이터베이스 락
   - ex) 100,000원 계좌에서 10,000원 출금 요청 A와 10,000원 출금 요청 B가 0.1초 간격으로 들어온다면?
              1. A가 현재 잔액 100,000원 조회
+         
           2. B가 현재 잔액 100,000원 조회
           3. A가 10,000원 뺀 90,000원 업데이트
           4. B가 10,000원 뺀 90,000원 업데이트
           5. 남은 잔액은 90,000원? -> 이럼 안된다.
-
+  
 - 트랜잭션 격리 수준
 
   - Read uncommited: 격리 수준이 제일 낮음. 커밋되지 않은 작업내역도 다른 트랜잭션에서 볼 수 있음.
@@ -445,6 +493,8 @@
   데이터 정합성과 동시성의 trade-off 때문에 현실적으로는 격리 수준을 고려한다.
 
   일반적인 경우 Read Commited - Repetable Read 사이에서 선택.
+
+<br>
 
 #### 정규화
 
@@ -512,11 +562,15 @@
   - Join의 엄청난 연산량을 피하기 위해서 사용
   - 정규화되지 않은 것과는 다름.
 
+<br>
+
 #### [데이터베이스의 인덱스](./database/230316_데이터베이스의_인덱스)
 
 - 해시 테이블
 - B-Tree
 - B+Tree
+
+<br>
 
 #### 실행계획
 
@@ -524,7 +578,7 @@
 - 옵티마이저
 - 스캔
 
-
+<br>
 
 ### 운영체제
 
@@ -537,7 +591,7 @@
 |힙|인스턴스|런타임에서 크기가 결정됨. 낮은 주소에서 높은 주소로 메모리 할당.|
 |스택|지역변수, 매개변수|컴파일에서 크기 결정. 높은 주소에서 낮은 주소로 메모리 할당.|
 
-
+<br>
 
 #### 동적할당
 
@@ -559,6 +613,8 @@
   - 함수가 전역 변수를 참조하고 있다면 Thread-Safe 하지 않을 수 있음
   - synchronized 블록
 
+<br>
+
 #### [메모리 단편화와 페이징](./os/230314_메모리_단편화와_페이징)
 
 - 외부 단편화
@@ -570,6 +626,8 @@
 - 세그멘테이션
 - 메모리 풀
 - 메모리 누수
+
+<br>
 
 
 #### CPU 스케줄링
@@ -592,6 +650,8 @@
     - 실행 시간 긴 프로세스 차례가 오지 않는 기아 현상 발생
   - Highest Respons-ratio Next
 
+<br>
+
 #### 페이지 교체 알고리즘
 
 - OPT(Optimal)
@@ -608,7 +668,7 @@
 - MFU(Most Frequently Used)
 - NUR(Not Used Recently)
 
-
+<br>
 
 ### 소프트웨어 일반
 
@@ -616,9 +676,13 @@
 
 - 스케일아웃은 서버의 대수를 늘리고, 스케일업은 서버의 성능을 늘린다.
 
+<br>
+
 #### 라이브러리 vs 프레임워크
 
 - 핵심은 제어의 주도권. 라이브러리는 개발자가 실행 흐름을 제어한다. 반면 프레임워크는 정해진 생명 주기 같은 것이 있고, 그 흐름 안에서 개발할 수 있다.
+
+<br>
 
 #### MSA
 
@@ -627,26 +691,61 @@
 - MSA 트랜잭션은 어떻게 처리할까?
   - SAGA 패턴
 
+<br>
+
 ### 자료구조 & 알고리즘
 
 #### Stack으로 계산기 구현
 
+<br>
+
 #### Stack 2개로 Queue 구현
 
 - inStack과 outStack. outStack이 비었을 때만 inStack -> outStack.
+
+<br>
 
 #### DFS && BFS
 
 - DFS -> Stack
 - BFS -> Queue
 
+<br>
 
 
-### 기타
 
-#### MyBatis vs JPA
+### MyBatis vs JPA
 
-#### Kafka vs RabbitMQ
+<br>
+
+### Kafka vs RabbitMQ
+
+#### 메시지 큐
+
+- 메시지 지향 미들웨어를 구현한 시스템
+- Producer - Queue - Consumer
+- 특징
+  - 비동기
+  - 낮은 결합도
+  - 확장성
+  - 탄력성
+  - 보장성
+
+<br>
+
+#### RabbitMQ
+
+- AMQP 프로토콜 구현
+
+- Exchange에서 Queue로 라우팅
+- Manage UI 제공
+- 플러그인으로 높은 확장성
+
+#### Kafka
+
+- 
+
+<br>
 
 ###  참고
 - https://martianlee.github.io/posts/naver-interview-review/
