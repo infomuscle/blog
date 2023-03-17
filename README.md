@@ -28,6 +28,7 @@
     - [@Transactional 어노테이션의 롤백 테스트](./spring/210512_@Transactional_어노테이션의_롤백_테스트)
     - [Feign으로 Multipart 요청 보내기](./spring/220611_Feign으로_MultiPart_요청_보내기)
     - [스프링 컨트롤러 인터페이스 저장 방식 개선](./spring/221007_스프링_컨트롤러_인터페이스_저장_방식_개선)
+    - [스프링 의존관계 주입 방법](./spring/230318_스프링_의존관계_주입_방법)
 - [파이썬](./python)
     - [파이썬 문자열 함수 정리](./python/210316_파이썬_문자열_함수_정리)
     - [파이썬 버전 및 가상환경 관리 - pyenv](./python/201127_파이썬_버전_및_가상환경_관리_pyenv)
@@ -59,10 +60,7 @@
 - IoC, DI
 - REST API
 - 통합 테스트와 단위 테스트
-- Oracle 자료형 정리
 - 자바 스트림
-- xor 스왑
-- 자료형과 2의 보수
 - 로드밸런서
 - GC 튜닝
 - MyBatis @Alias
@@ -87,15 +85,11 @@
 - 아마존
 - 빈 스코프
 - request 스코프
-- 자바 메모리 구조
-- String Constant Pool
 - Hashmap 키 충돌
 - Java 컴파일 과정
 - Compiler vs Interpreter
-- String 불변객체인 이유
 - Thread Safe
 - JVM 구조
-- Checked vs Unchecked Exception
 - 스프링부트 배너 변경
 - Vim 사용법
 
@@ -262,6 +256,17 @@
 
 <br>
 
+#### String Constant Pool
+
+<br>
+
+#### String 불변객체인 이유
+
+- 힙 공간 절약
+- Thread Safe
+
+<br>
+
 #### 오버로딩 vs 오버라이딩
 
 - 오버로딩
@@ -270,6 +275,10 @@
 - 오버라이딩
   - 수직적
   - 부모 클래스의 메소드를 재정의 하는 경우
+
+<br>
+
+#### Checked Exception vs Unchecked Exception
 
 <br>
 
@@ -311,18 +320,19 @@
 
 <br>
 
-#### 의존성 주입 방식
+#### [스프링 의존관계 주입 방법](./spring/230318_스프링_의존관계_주입_방법)
 
 - **생성자 주입**
+  - 순환 참조 방지
+    - 순환 호출시 스택오버플로우
   - 객체의 불변성 확보
     - 런타임에서 의존성이 임의로 바뀌는 경우 방지
+  - 스프링에 직접적인 의존 방지
+    - @Autowired는 스프링에서 제공하는데, 다른 프레임워크로 바꾼다면?
   - 테스트 코드 작성 가능
     - 스프링에 비의존적인 순수 자바 코드로 작성 가능
   - final + lombok
     - @RequiredArgsConstructor
-  - 스프링에 직접적인 의존 방지
-    - @Autowired는 스프링에서 제공하는데, 다른 프레임워크로 바꾼다면?
-  - 순환 참조 방지
 - 수정자 주입(Setter)
 - 필드 주입(@Autowired)
 
