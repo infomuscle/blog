@@ -49,51 +49,7 @@
     - [IntelliJ IDEA 플러그인 추천](./etc/210326_InetlliJ_IDEA_플러그인_추천)
     - [398일간의 1일 1커밋 회고](https://github.com/infomuscle/blog/tree/master/etc/210711_365%EC%9D%BC%EA%B0%84%EC%9D%98_1%EC%9D%BC_1%EC%BB%A4%EB%B0%8B_%ED%9A%8C%EA%B3%A0)
 
-
-
-
-## 작성 예정
-- Adapter 패턴 with Feign
-- 컨트롤러, AOP, ExceptionHandler
-- JPA, Hibernate, Spring Data JPA
-- OSI 7 Layer
-- IoC, DI
-- REST API
-- 통합 테스트와 단위 테스트
-- 자바 스트림
-- 로드밸런서
-- GC 튜닝
-- MyBatis @Alias
-- 동시성 이슈와 ConcurrentHashMap
-- Jenkins, Docker, 빌드 및 배포 자동화
-- Java Static
-- 스프링 의존관계 주입 방법 + 롬복
-- 추상 클래스(abstract class)와 인터페이스(interface)
-- 로드밸런서
-- 스프링 시큐리티
-  - 세션/쿠키
-  - JWT 토큰 로그인 구현
-- Servlet
-- 디자인 패턴
-  - 전략/옵저버/데코레이터/팩토리 메서드/스태틱 팩토리 메서드/어댑터/싱글톤/빌더/커맨드
-- Sentry
-- Mockito
-- MSA
-  - 트랜잭션/단점/Pinpoint
-- 디버깅
-- feign compression
-- 아마존
-- 빈 스코프
-- request 스코프
-- Hashmap 키 충돌
-- Java 컴파일 과정
-- Compiler vs Interpreter
-- Thread Safe
-- JVM 구조
-- 스프링부트 배너 변경
-- Vim 사용법
-
-
+<br>
 
 
 ## 내가 보기 위한 CS 초간단 요약
@@ -324,15 +280,10 @@
 
 - **생성자 주입**
   - 순환 참조 방지
-    - 순환 호출시 스택오버플로우
   - 객체의 불변성 확보
-    - 런타임에서 의존성이 임의로 바뀌는 경우 방지
   - 스프링에 직접적인 의존 방지
-    - @Autowired는 스프링에서 제공하는데, 다른 프레임워크로 바꾼다면?
-  - 테스트 코드 작성 가능
-    - 스프링에 비의존적인 순수 자바 코드로 작성 가능
+  - 테스트 코드 작성 편의
   - final + lombok
-    - @RequiredArgsConstructor
 - 수정자 주입(Setter)
 - 필드 주입(@Autowired)
 
@@ -721,8 +672,6 @@
 - BFS -> Queue
 
 <br>
-
-
 
 ### MyBatis vs JPA
 
