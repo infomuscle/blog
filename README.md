@@ -48,6 +48,8 @@
     - [마크다운 문법 정리](./etc/210305_마크다운_문법_정리)
     - [IntelliJ IDEA 플러그인 추천](./etc/210326_InetlliJ_IDEA_플러그인_추천)
     - [398일간의 1일 1커밋 회고](https://github.com/infomuscle/blog/tree/master/etc/210711_365%EC%9D%BC%EA%B0%84%EC%9D%98_1%EC%9D%BC_1%EC%BB%A4%EB%B0%8B_%ED%9A%8C%EA%B3%A0)
+    - [Spring Boot with Kotlin 인프런 강의 제작 후기](./etc/231228_Spring_Boot_Kotlin_인프런_강의_제작_후기)
+    - [암호화 알고리즘](./etc/240101_암호화_알고리즘)
 
 <br>
 
